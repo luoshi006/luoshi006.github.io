@@ -1,0 +1,65 @@
+# highlighter: pygments
+# Site settings
+title: luoshi006
+description: (:)~
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "https://luoshi006.github.io/" # the base hostname & protocol for your site
+canonical: "https://luoshi006.github.io/" # the base hostname & protocol for your site
+#enforce_ssl: mickir.me
+github_username:  luoshi006
+favicon: "/favicon.ico"
+
+# Build settings
+permalink: /blog/:title.html   #博文的固定链接
+paginate: 10
+author:                                     #自定义常量
+  name: luoshi006
+  email: luoshi006@gmail.com
+  link: https://luoshi006.github.io/
+  github: https://github.com/luoshi006
+
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: true
+
+# Make sure to put your manifest.json at /
+pwa: true
+
+remote_theme: zYeoman/3-Jekyll
+
+#leancloud:
+#  enable: true
+#  app_id: xYnmPhrQu3YUQ28Ywk2qEfIp-gzGzoHsz
+#  app_key: ijsCplpAyUiEzXD36KkOFwHU
+
+#analytics:
+#  google: "UA-96052060-1"
+
+exclude: [LICENSE, CNAME, README.md, .gitignore, ed, ed.py, node_modules]
+
+avatar: /head.jpg
+
+timezone: Asia/Shanghai
+
+sass:
+  style: compressed
+
+plugins:
+    - jekyll-paginate
+    - jemoji
+    - jekyll-mentions
+    - jekyll-seo-tag
+    - jekyll-relative-links
+    - jekyll-sitemap
+
+markdown: kramdown
+kramdown:
+  hard_wrap:  true
+  syntax_highlighter_opts:
+    wrap: true
+  parse_block_html: true
