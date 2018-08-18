@@ -1,5 +1,4 @@
-_site
-.sass-cache
-_posts/
-_config.yml
-index.html
+# tmp file
+Gemfile.lock
+.td~
+_site/
