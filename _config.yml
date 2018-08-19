@@ -32,13 +32,13 @@ pwa: true
 
 remote_theme: zYeoman/3-Jekyll
 
-#leancloud:
-#  enable: true
-#  app_id: xYnmPhrQu3YUQ28Ywk2qEfIp-gzGzoHsz
-#  app_key: ijsCplpAyUiEzXD36KkOFwHU
+leancloud:
+  enable: true
+  app_id: xeMWCaiQur7iyujbXyBBHCz5-gzGzoHsz
+  app_key: 0KI2id0CT9Ktv5D5gXBInuIv
 
-#analytics:
-#  google: "UA-96052060-1"
+analytics:
+  google: "UA-124202652-1"
 
 exclude: [LICENSE, CNAME, README.md, .gitignore, ed, ed.py, node_modules]
 
