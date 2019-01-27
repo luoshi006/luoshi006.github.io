@@ -23,6 +23,10 @@ sudo ln -s /usr/bin/nodejs /usr/bin/node
 
 sw-precache --config=_sw-precache-config.js
 ```
+
+jekyll 相关操作参考：
+https://jekyllrb.com/
+
 ### ref
-https://github.com/GoogleChromeLabs/sw-precache
-https://blog.csdn.net/yypsober/article/details/51906691
+- https://github.com/GoogleChromeLabs/sw-precache
+- https://blog.csdn.net/yypsober/article/details/51906691
