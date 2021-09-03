@@ -1,0 +1,75 @@
+# Meta Data for SEO
+
+## Homepage
+title = "Home"
+titleSeparator = "-"
+titleAddition = "Modern Documentation Theme"
+description = "luoshi006 Homepage"
+
+## Open Graph
+images = ["doks.png"]
+# zh_CN en_US
+ogLocale = "zh_CN"
+domainTLD = "doks.netlify.app"
+titleHome = "Doks Theme"
+
+## Twitter Cards
+twitterSite = ""
+twitterCreator = ""
+
+## JSON-LD
+# schemaType = "Person"
+schemaType = "Organization"
+schemaName = "Doks"
+schemaAuthor = "luoshi006"
+schemaAuthorTwitter = "https://twitter.com/"
+schemaAuthorLinkedIn = "https://www.linkedin.com/"
+schemaAuthorGitHub = "https://github.com/luoshi006"
+schemaLocale = "en-US"
+schemaLogo = "logo-doks.png"
+schemaLogoWidth = 512
+schemaLogoHeight = 512
+schemaImage = "doks.png"
+schemaImageWidth = 1280
+schemaImageHeight = 640
+schemaTwitter = "https://twitter.com"
+schemaLinkedIn = ""
+schemaGitHub = "https://github.com/luoshi006"
+schemaSection = "blog"
+
+## Sitelinks Search Box
+siteLinksSearchBox = false
+
+## Chrome Browser
+themeColor = "#fff"
+
+# Images
+quality = 85
+bgColor = "#fff"
+landscapePhotoWidths = [900, 800, 700, 600, 500]
+portraitPhotoWidths = [800, 700, 600, 500]
+lqipWidth = "20x"
+
+# Footer
+footer = "Powered by luoshi006"
+copyRight = "Copyright (c)"
+
+# Alert
+alert = false
+alertText = "Like Doks? <a class=\"alert-link\" href=\"https://github.com/luoshi006/luoshi006.github.io\">Star on GitHub</a>. Thanks!</a>"
+
+# Edit Page
+docsRepo = "https://github.com/luoshi006/luoshi006.github.io"
+editPage = false
+
+[options]
+  lazySizes = true
+  clipBoard = true
+  instantPage = true
+  flexSearch = true
+  darkMode = true
+  bootStrapJs = true
+  breadCrumb = false
+  highLight = true
+  kaTex = true
+  collapsibleSidebar = false

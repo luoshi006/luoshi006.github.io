@@ -1,0 +1,13 @@
+# tmp file
+Gemfile.lock
+.td~
+_site/
+
+# hugo
+bin
+node_modules
+public
+resources
+# Local Netlify folder
+.netlify
+TODO
