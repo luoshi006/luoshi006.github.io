@@ -1,6 +1,6 @@
 ---
-title : "Prologue"
-description: "Prologue."
+title : "Learning"
+description: "learning."
 lead: ""
 date: 2021-09-03T00:35:10+08:00
 lastmod: 2021-09-03T00:35:10+08:00

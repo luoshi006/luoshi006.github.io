@@ -3,7 +3,7 @@
 ## Homepage
 title = "Home"
 titleSeparator = "-"
-titleAddition = "Modern Documentation Theme"
+titleAddition = "luoshi006"
 description = "luoshi006 Homepage"
 
 ## Open Graph
@@ -72,4 +72,5 @@ editPage = false
   breadCrumb = false
   highLight = true
   kaTex = true
-  collapsibleSidebar = false
+  collapsibleSidebar = true
+  
