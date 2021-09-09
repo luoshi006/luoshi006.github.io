@@ -19,7 +19,8 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="RT Traj Optimization for Racing">
 <meta property="og:description" content="refs: https://github.com/janismac/RacingTrajectoryOptimization
-  术语 坐标系   $x,y$ Global 坐标系 $\xi, \eta$ Body 坐标系 $\psi$ Yaw angle $[a_{long}, a_{lat}]$ Body 系 加速度 $u = [a_x, a_y]$ Global 系 加速度 Model  在轨迹规划中，使用质心模型，只考虑质点加速度，能够使轨迹规划成为一个 线性优化 问题； 在自动驾驶场景中，汽车的控制通常由油门、方向盘、刹车实现。油门仅提供正向加速度；刹车提供减速度；方向盘改变前轮转向，从而将纵向加速度映射到横向。为方便控制，在 Tracking 过程中，分别实现了横纵向控制器。 轨迹优化中，需要考虑加速度限制。尤其是高速行驶过程中的空气影响。  Model Predictive Control  给定被控系统模型和输入，预测未来时刻的系统状态； 离散模型按 时间步长 迭代，就可以得到一段离散轨迹；  Race Track Model  赛道模型由中心线 $C$ 和 赛道区域 $T$ 组成；   progress function 进度  找到与车辆位置最近的 中心线点，return 从起点到当前 中心线点的弧长；   Approximate Solutions  优化问题通常是非凸的，轨迹优化中最常见的非凸约束是非凸的可行区域。    Sequential Convex Programming &ndash; Guess 初值 &ndash; 在初值附近构造 QP 问题，求解局部最优解；">
+  Summary 以赛道场景，构建了 QP 问题，求解在赛道上可行的轨迹。
+ QP 问题要求问题是线性的，且可行域是凸集；文章比较详细的介绍了线性化操作及构建凸集的方法； 可借鉴的东西有限，但是作为入门很不错；  术语 坐标系   $x,y$ Global 坐标系 $\xi, \eta$ Body 坐标系 $\psi$ Yaw angle $[a_{long}, a_{lat}]$ Body 系 加速度 $u = [a_x, a_y]$ Global 系 加速度 Model  在轨迹规划中，使用质心模型，只考虑质点加速度，能够使轨迹规划成为一个 线性优化 问题； 在自动驾驶场景中，汽车的控制通常由油门、方向盘、刹车实现。油门仅提供正向加速度；刹车提供减速度；方向盘改变前轮转向，从而将纵向加速度映射到横向。为方便控制，在 Tracking 过程中，分别实现了横纵向控制器。 轨迹优化中，需要考虑加速度限制。尤其是高速行驶过程中的空气影响。  Model Predictive Control  给定被控系统模型和输入，预测未来时刻的系统状态； 离散模型按 时间步长 迭代，就可以得到一段离散轨迹；  Race Track Model  赛道模型由中心线 $C$ 和 赛道区域 $T$ 组成；   progress function 进度  找到与车辆位置最近的 中心线点，return 从起点到当前 中心线点的弧长；   Approximate Solutions  优化问题通常是非凸的，轨迹优化中最常见的非凸约束是非凸的可行区域。    Sequential Convex Programming &ndash; Guess 初值 &ndash; 在初值附近构造 QP 问题，求解局部最优解；">
 <meta property="og:url" content="https://luoshi006.github.io/docs/learning/traj_planning/20210903_rt_traj_optimization_for_racing/">
 <meta property="og:site_name" content="Home">
 <meta property="article:published_time" content="2021-09-03T00:35:10+08:00">
@@ -108,6 +109,7 @@ Reading
 <h3>On this page</h3>
 <nav id=TableOfContents>
 <ul>
+<li><a href=#summary>Summary</a></li>
 <li><a href=#术语>术语</a>
 <ul>
 <li><a href=#坐标系>坐标系</a></li>
@@ -126,7 +128,11 @@ Reading
 <li><a href=#trajectory-optimization-problem>Trajectory Optimization Problem</a></li>
 </ul>
 </li>
-<li><a href=#trajectory-optimization-using-sequential-convex-restriction>Trajectory Optimization using Sequential Convex Restriction</a></li>
+<li><a href=#trajectory-optimization-using-sequential-convex-restriction>Trajectory Optimization using Sequential Convex Restriction</a>
+<ul>
+<li><a href=#race-track-model-2>Race Track Model</a></li>
+</ul>
+</li>
 </ul>
 </nav>
 </div>
@@ -141,6 +147,12 @@ Reading
 <div align=center>
 <img src=https://luoshi006.github.io/docs/learning/traj_planning/images/2021-09-03_19-49.png title=image alt="racer sim" width=300>
 </div>
+<h2 id=summary>Summary<a href=#summary class=anchor aria-hidden=true>#</a> </h2>
+<p>以赛道场景，构建了 QP 问题，求解在赛道上可行的轨迹。</p>
+<ul>
+<li>QP 问题要求问题是线性的，且可行域是凸集；文章比较详细的介绍了线性化操作及构建凸集的方法；</li>
+<li>可借鉴的东西有限，但是作为入门很不错；</li>
+</ul>
 <h2 id=术语>术语<a href=#术语 class=anchor aria-hidden=true>#</a> </h2>
 <h3 id=坐标系>坐标系<a href=#坐标系 class=anchor aria-hidden=true>#</a> </h3>
 <div align=center>
@@ -219,7 +231,34 @@ Reading
 <h3 id=trajectory-optimization-problem>Trajectory Optimization Problem<a href=#trajectory-optimization-problem class=anchor aria-hidden=true>#</a> </h3>
 <p>参考论文 3.3</p>
 <h2 id=trajectory-optimization-using-sequential-convex-restriction>Trajectory Optimization using Sequential Convex Restriction<a href=#trajectory-optimization-using-sequential-convex-restriction class=anchor aria-hidden=true>#</a> </h2>
-<p>SCR 需要保证初始解的可行性；</p>
+<h3 id=race-track-model-2>Race Track Model<a href=#race-track-model-2 class=anchor aria-hidden=true>#</a> </h3>
+<h4 id=track-tessellation>Track Tessellation<a href=#track-tessellation class=anchor aria-hidden=true>#</a> </h4>
+<p>在赛道中心线上采样，并找到左右边界点；相邻的边界点串联得到细分的赛道范围；</p>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/2021-09-09_18-39.png title=image alt="track tessellation" width=300>
+</div>
+<h4 id=merging-polygons>Merging Polygons<a href=#merging-polygons class=anchor aria-hidden=true>#</a> </h4>
+<p>对相邻区域能够组成凸集的，合并；</p>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/2021-09-09_18-42.png title=image alt="Merge race" width=300>
+</div>
+<h4 id=overlaps>Overlaps<a href=#overlaps class=anchor aria-hidden=true>#</a> </h4>
+<p>扩展重叠区域</p>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/2021-09-09_18-44.png title=image alt="Merge race" width=300>
+</div>
+建立与轨迹点对应的最大凸包序列（重叠区域未显示）
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/2021-09-09_18-45.png title=image alt="Merge race2" width=300>
+</div>
+<p>运动过程中，找到的线性化点对应的凸包</p>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/2021-09-06_19-37.png title=image alt="scr convex" width=300>
+</div>
+<hr>
+<blockquote>
+<p>SCR 部分未详细阅读，代码结构相对比较清晰，有缘待续吧。</p>
+</blockquote>
 <hr>
 <p><br><br><br></p>
 <ul>
@@ -252,6 +291,6 @@ Reading
 <script src=https://luoshi006.github.io/js/vendor/katex/dist/katex.min.7a4317f2b5d5ad65d4eb9573a27961c7404cf40db15c9637fa0cb380122c91c920aef6e4845b45e0b52c33aaae35921edcbe68420252c50f49ccd58660964ac0.js integrity="sha512-ekMX8rXVrWXU65Vzonlhx0BM9A2xXJY3+gyzgBIskckgrvbkhFtF4LUsM6quNZIe3L5oQgJSxQ9JzNWGYJZKwA==" crossorigin=anonymous defer></script>
 <script src=https://luoshi006.github.io/js/vendor/katex/dist/contrib/auto-render.min.916823ec103cf367b71e28a6f01513cb9c3ac6708ccb5229402ec46b8e30a8b25003db694df35d80e9dd666a371f327c6152790617b6256390c164109a90bd4c.js integrity="sha512-kWgj7BA882e3Hiim8BUTy5w6xnCMy1IpQC7Ea44wqLJQA9tpTfNdgOndZmo3HzJ8YVJ5Bhe2JWOQwWQQmpC9TA==" crossorigin=anonymous defer></script>
 <script src=https://luoshi006.github.io/main.min.25cdb7419aabf9517a7272eef61b8ae9bf11b7f8c76fdf5365aa2099652408dabbf0b32e428c16de79c5debbc905f5cc65abc8e3b4b8e8884d7774fca3312eb3.js integrity="sha512-Jc23QZqr+VF6cnLu9huK6b8Rt/jHb99TZaogmWUkCNq78LMuQowW3nnF3rvJBfXMZavI47S46IhNd3T8ozEusw==" crossorigin=anonymous defer></script>
-<script src=https://luoshi006.github.io/index.min.ebfcb4076f59a7e957093fb8fbedf786225711290bf16bec4f7c0b3239b3ba4d7cea7db42219dc452317f59c0689bccf5191cd9ef25d10cabefb5d442424fb5b.js integrity="sha512-6/y0B29Zp+lXCT+4++33hiJXESkL8WvsT3wLMjmzuk186n20IhncRSMX9ZwGibzPUZHNnvJdEMq++11EJCT7Ww==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/index.min.d7f1d4b36176365a5c67e822a771ec9b5ed6ab2cff3856b43cc104bc8b40b069f6b180034d06bf416281b2654245ea69384d67f18123eab07d724a024d592a4d.js integrity="sha512-1/HUs2F2NlpcZ+gip3Hsm17Wqyz/OFa0PMEEvItAsGn2sYADTQa/QWKBsmVCReppOE1n8YEj6rB9ckoCTVkqTQ==" crossorigin=anonymous defer></script>
 </body>
 </html>
