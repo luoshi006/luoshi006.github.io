@@ -20,6 +20,11 @@ weight: 021
 <img src="/docs/learning/traj_planning/images/2021-09-03_19-49.png" title="image" alt="racer sim" width="300"/>
 </div>
 
+## Summary
+以赛道场景，构建了 QP 问题，求解在赛道上可行的轨迹。
+-  QP 问题要求问题是线性的，且可行域是凸集；文章比较详细的介绍了线性化操作及构建凸集的方法；
+-  可借鉴的东西有限，但是作为入门很不错；
+
 ## 术语
 ### 坐标系
 
@@ -68,7 +73,7 @@ weight: 021
 -- 在初值附近构造 QP 问题，求解局部最优解；<br>
 -- 逐步迭代，直到解满足条件<br>
 
---- 
+---
 <br><br><br>
 
 ## Trajectory Optimization using Sequential Linearization
@@ -113,11 +118,36 @@ weight: 021
 参考论文 3.3
 
 ## Trajectory Optimization using Sequential Convex Restriction
+### Race Track Model
+#### Track Tessellation
+在赛道中心线上采样，并找到左右边界点；相邻的边界点串联得到细分的赛道范围；
+<div align="center">
+<img src="/docs/learning/traj_planning/images/2021-09-09_18-39.png" title="image" alt="track tessellation" width="300"/>
+</div>
 
-SCR 需要保证初始解的可行性；
+#### Merging Polygons
+对相邻区域能够组成凸集的，合并；
+<div align="center">
+<img src="/docs/learning/traj_planning/images/2021-09-09_18-42.png" title="image" alt="Merge race" width="300"/>
+</div>
 
+#### Overlaps
+扩展重叠区域
+<div align="center">
+<img src="/docs/learning/traj_planning/images/2021-09-09_18-44.png" title="image" alt="Merge race" width="300"/>
+</div>
+建立与轨迹点对应的最大凸包序列（重叠区域未显示）
+<div align="center">
+<img src="/docs/learning/traj_planning/images/2021-09-09_18-45.png" title="image" alt="Merge race2" width="300"/>
+</div>
 
+运动过程中，找到的线性化点对应的凸包
+<div align="center">
+<img src="/docs/learning/traj_planning/images/2021-09-06_19-37.png" title="image" alt="scr convex" width="300"/>
+</div>
 
+---
+> SCR 部分未详细阅读，代码结构相对比较清晰，有缘待续吧。
 
 
 

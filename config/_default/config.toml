@@ -41,6 +41,7 @@ isHTML = false
 isPlainText = true
 noUgly = true
 rel  = "sitemap"
+googleAnalytics = "UA-124202652-1"
 
 [markup]
   [markup.goldmark]

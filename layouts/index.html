@@ -8,9 +8,13 @@
       <p class="lead">{{ .Params.lead | safeHTML }}</p>
       <a class="btn btn-primary btn-lg px-4 mb-2" href="{{ "docs/learning/introduction/" | relURL }}" role="button">Get
         started</a>
-      <p class="meta">Open-source MIT Licensed. <a href="https://github.com/luoshi006/luoshi006.github.io">GitHub </a>
+      <p class="meta">Open-source MIT Licensed. </a>
       </p>
     </div>
+    <head>
+        {{ template "_internal/google_analytics.html" . }}
+        {{ template "_internal/google_analytics_async.html" . }}
+    </head>
   </div>
 </section>
 {{ end }}
@@ -20,9 +24,9 @@
   <div class="container">
     <div class="row justify-content-center text-center">
       <div class="col-lg-5">
-        <h2 class="h4">Learning 🎓</h2>
-        <p>🗺️ path finding</p>
-        <p>🚙 traj planning</p>
+        <h2 class="h4"> <a href="docs/learning/introduction/">Learning 🎓</a></h2>
+        <p> 🗺️ path finding </p>
+        <p><a href="docs/learning/traj_planning/20210903_traj_planning">🚙 traj planning</a></p>
       </div>
       <div class="col-lg-5">
         <h2 class="h4">Reading 📚</h2>
