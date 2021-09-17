@@ -8,6 +8,7 @@ TODO 未读懂的点
 Bellman’s principle 动态规划最优算法 quintic_polynomial KeyPoints 采样频率的影响 过低的采样频率可能引起超调（下） Frenet 坐标系
 对于轨迹上一点 reference，以 切线方向 $\vec{t}_r$ 和法线方向 $\vec{n}_x$ 建立坐标系；$d(t)$ 表示机器人偏离轨迹的距离，$s(t)$ 表示机器人行程。
 图中，$\vec{t}_x, \vec{n}_x$ 仅用于表示机器人在 Frenet 坐标系的位姿；</description></item><item><title>Cubic Spline</title><link>https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/</link><pubDate>Fri, 17 Sep 2021 15:56:35 +0800</pubDate><guid>https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/</guid><description>refs: https://mathworld.wolfram.com/CubicSpline.html
+code: https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver/cubic_spline_planner.py
 Summary 三次样条曲线由分段三次多项式组成，样条曲线依次穿过控制点 $m$ 。
 不同的边界条件可以产生各种样条； &amp;ldquo;natural&amp;rdquo; 三次样条：终点处的二阶导数置为 $0$ 。
 Flow 对于一维的情况，给定 $n+1$ 个控制点 $(y_0, y_1, &amp;hellip; , y_n)$ [Bartels et al.]，第 $i$ 段曲线表示为：

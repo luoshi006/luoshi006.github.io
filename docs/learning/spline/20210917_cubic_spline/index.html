@@ -19,6 +19,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cubic Spline">
 <meta property="og:description" content="refs: https://mathworld.wolfram.com/CubicSpline.html
+  code: https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver/cubic_spline_planner.py
   Summary 三次样条曲线由分段三次多项式组成，样条曲线依次穿过控制点 $m$ 。
 不同的边界条件可以产生各种样条； &ldquo;natural&rdquo; 三次样条：终点处的二阶导数置为 $0$ 。
 Flow 对于一维的情况，给定 $n+1$ 个控制点 $(y_0, y_1, &mldr; , y_n)$ [Bartels et al.]，第 $i$ 段曲线表示为：
@@ -120,7 +121,12 @@ Reading
 <nav id=TableOfContents>
 <ul>
 <li><a href=#summary>Summary</a></li>
-<li><a href=#flow>Flow</a></li>
+<li><a href=#flow>Flow</a>
+<ul>
+<li><a href=#result>result</a></li>
+<li><a href=#求解-d_i>求解 $D_i$</a></li>
+</ul>
+</li>
 </ul>
 </nav>
 </div>
@@ -131,6 +137,9 @@ Reading
 <hr>
 <blockquote>
 <p>refs: <a href=https://mathworld.wolfram.com/CubicSpline.html>https://mathworld.wolfram.com/CubicSpline.html</a></p>
+</blockquote>
+<blockquote>
+<p>code: <a href=https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver/blob/master/Optimal%20Trajectory%20in%20a%20Frenet%20Frame/cubic_spline_planner.py>https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver/cubic_spline_planner.py</a></p>
 </blockquote>
 <div align=center>
 <img src=https://mathworld.wolfram.com/images/eps-gif/CubicSpline_700.gif title=image alt=cubic_spline width=300>
@@ -147,12 +156,14 @@ Reading
 <p>$$Y_i(1) = y_{i+1} = a_i+b_i+c_i+d_i$$</p>
 <p>$$Y'_i(0) = D_i = b_i$$</p>
 <p>$$Y'<em>i(1) = D</em>{i+1}=b_i+2 c_i +3 d_i$$</p>
+<h3 id=result>result<a href=#result class=anchor aria-hidden=true>#</a> </h3>
 <p>四个未知数，四个方程，求解可得：</p>
 <p>$$a_i = y_i$$</p>
 <p>$$b_i=D_i$$</p>
 <p>$$c_i = 3(y_{i+1}-y_i)-2D_i-D_{i+1}$$</p>
 <p>$$d_i = 2(y_i-y_{i+1})+D_i+D_{i+1}$$</p>
 <hr>
+<h3 id=求解-d_i>求解 $D_i$<a href=#求解-d_i class=anchor aria-hidden=true>#</a> </h3>
 <p>对于<strong>分段曲线</strong>，要求二阶导连续，则对于内部点：</p>
 <p>$$Y_{i-1}(1)= y_i$$</p>
 <p>$$Y'_{i-1}(1)=Y'_i(0)$$</p>
@@ -177,6 +188,7 @@ Reading
 <div align=center>
 <img src=https://luoshi006.github.io/docs/learning/spline/images/2021-09-17_19-58.png title=image alt=formulate width=400>
 </div>
+<p>代入 <a href=https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/#result>result </a> 可以得到 $a_i, b_i, c_i, d_i$ 四个 vector，通过行程求 $i$，取出对应三阶多项式求解。</p>
 <div class=my-n3></div>
 </main>
 </div>
@@ -202,6 +214,6 @@ Reading
 <script src=https://luoshi006.github.io/js/vendor/katex/dist/katex.min.7a4317f2b5d5ad65d4eb9573a27961c7404cf40db15c9637fa0cb380122c91c920aef6e4845b45e0b52c33aaae35921edcbe68420252c50f49ccd58660964ac0.js integrity="sha512-ekMX8rXVrWXU65Vzonlhx0BM9A2xXJY3+gyzgBIskckgrvbkhFtF4LUsM6quNZIe3L5oQgJSxQ9JzNWGYJZKwA==" crossorigin=anonymous defer></script>
 <script src=https://luoshi006.github.io/js/vendor/katex/dist/contrib/auto-render.min.916823ec103cf367b71e28a6f01513cb9c3ac6708ccb5229402ec46b8e30a8b25003db694df35d80e9dd666a371f327c6152790617b6256390c164109a90bd4c.js integrity="sha512-kWgj7BA882e3Hiim8BUTy5w6xnCMy1IpQC7Ea44wqLJQA9tpTfNdgOndZmo3HzJ8YVJ5Bhe2JWOQwWQQmpC9TA==" crossorigin=anonymous defer></script>
 <script src=https://luoshi006.github.io/main.min.25cdb7419aabf9517a7272eef61b8ae9bf11b7f8c76fdf5365aa2099652408dabbf0b32e428c16de79c5debbc905f5cc65abc8e3b4b8e8884d7774fca3312eb3.js integrity="sha512-Jc23QZqr+VF6cnLu9huK6b8Rt/jHb99TZaogmWUkCNq78LMuQowW3nnF3rvJBfXMZavI47S46IhNd3T8ozEusw==" crossorigin=anonymous defer></script>
-<script src=https://luoshi006.github.io/index.min.2f8f2ffe772faa4d94c4ed91f945bf21c453fef6c2bd4ecd979b590a3c665716ae95ba19d812889da66d1ade5d32641e14e70a794aa7ffcef612cce2a6330f15.js integrity="sha512-L48v/ncvqk2UxO2R+UW/IcRT/vbCvU7Nl5tZCjxmVxaulboZ2BKInaZtGt5dMmQeFOcKeUqn/872EszipjMPFQ==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/index.min.be409247acc472254f519f9cdcfeb286b25e38a0159c2c56cb50b6ac2bd7d6c92dcc8e96df0fea5b9be06d9c1a3e59792e5b010327b86ca18f2d13dee9cfc8f0.js integrity="sha512-vkCSR6zEciVPUZ+c3P6yhrJeOKAVnCxWy1C2rCvX1sktzI6W3w/qW5vgbZwaPll5LlsBAye4bKGPLRPe6c/I8A==" crossorigin=anonymous defer></script>
 </body>
 </html>
