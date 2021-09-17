@@ -1,0 +1,207 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/KaTeX_Main-Regular.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/KaTeX_Math-Italic.woff2 type=font/woff2 crossorigin>
+<link rel=stylesheet href=https://luoshi006.github.io/main.cfdf8ee24dc17db552bc8fdd2e163e3ab5ba8225ceae2ccb20537f67d7c14758ed3793e85f3733ed0afcac2bc5000b4a92e00a5d7d036ada71afedecb46a02e0.css integrity="sha512-z9+O4k3BfbVSvI/dLhY+OrW6giXOrizLIFN/Z9fBR1jtN5PoXzcz7Qr8rCvFAAtKkuAKXX0Datpxr+3stGoC4A==" crossorigin=anonymous>
+<noscript><style>img.lazyload{display:none}</style></noscript>
+<meta name=robots content="index, follow">
+<meta name=googlebot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name=bingbot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<title>Cubic Spline - Home</title>
+<meta name=description content="luoshi006 Homepage">
+<link rel=canonical href=https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/>
+<meta property="og:locale" content="zh_CN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cubic Spline">
+<meta property="og:description" content="refs: https://mathworld.wolfram.com/CubicSpline.html
+  Summary 三次样条曲线由分段三次多项式组成，样条曲线依次穿过控制点 $m$ 。
+不同的边界条件可以产生各种样条； &ldquo;natural&rdquo; 三次样条：终点处的二阶导数置为 $0$ 。
+Flow 对于一维的情况，给定 $n+1$ 个控制点 $(y_0, y_1, &mldr; , y_n)$ [Bartels et al.]，第 $i$ 段曲线表示为：
+$$ Y_i(t) = a_i + b_i t + c_i t^2 + d_i t^3$$
+其中，$t \in [0,1]$ ， $i=0, &mldr;, n-1$
+对于三阶多项式，构造如下方程组：
+$$Y_i(0) = y_i = a_i$$
+$$Y_i(1) = y_{i+1} = a_i+b_i+c_i+d_i$$
+$$Y'_i(0) = D_i = b_i$$
+$$Y'i(1) = D{i+1}=b_i+2 c_i +3 d_i$$">
+<meta property="og:url" content="https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/">
+<meta property="og:site_name" content="Home">
+<meta property="article:published_time" content="2021-09-17T15:56:35+08:00">
+<meta property="article:modified_time" content="2021-09-17T15:56:35+08:00">
+<meta property="og:image" content="https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:site content>
+<meta name=twitter:creator content>
+<meta name=twitter:title content="Cubic Spline">
+<meta name=twitter:description content>
+<meta name=twitter:image content="https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/">
+<meta name=twitter:image:alt content="Cubic Spline">
+<script type=application/ld+json>{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://luoshi006.github.io/#/schema/organization/1","name":"Doks","url":"https://luoshi006.github.io/","sameAs":["https://twitter.com","https://github.com/luoshi006"],"logo":{"@type":"ImageObject","@id":"https://luoshi006.github.io/#/schema/image/1","url":"https://luoshi006.github.io/logo-doks.png","width":512,"height":512,"caption":"Doks"},"image":{"@id":"https://luoshi006.github.io/#/schema/image/1"}},{"@type":"WebSite","@id":"https://luoshi006.github.io/#/schema/website/1","url":"https://luoshi006.github.io/","name":"Home","description":"luoshi006 Homepage","publisher":{"@id":"https://luoshi006.github.io/#/schema/organization/1"}},{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/","url":"https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/","name":"Cubic Spline","description":"","isPartOf":{"@id":"https://luoshi006.github.io/#/schema/website/1"},"about":{"@id":"https://luoshi006.github.io/#/schema/organization/1"},"datePublished":"2021-09-17T15:56:35CET","dateModified":"2021-09-17T15:56:35CET","breadcrumb":{"@id":"https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/#/schema/breadcrumb/1"},"primaryImageOfPage":{"@id":"https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/#/schema/image/2"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/"]}]},{"@type":"BreadcrumbList","@id":"https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/#/schema/breadcrumb/1","name":"Breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io","url":"https://luoshi006.github.io","name":"Home"}},{"@type":"ListItem","position":3,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/","url":"https://luoshi006.github.io/docs/","name":"Docs"}},{"@type":"ListItem","position":4,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/","url":"https://luoshi006.github.io/docs/learning/","name":"Learning"}},{"@type":"ListItem","position":5,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/spline/","url":"https://luoshi006.github.io/docs/learning/spline/","name":"Spline"}},{"@type":"ListItem","position":6,"item":{"@id":"https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/"}}]},{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":"https://luoshi006.github.io/#/schema/article/1","headline":"Cubic Spline","description":"","isPartOf":{"@id":"https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/"},"mainEntityOfPage":{"@id":"https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/"},"datePublished":"2021-09-17T15:56:35CET","dateModified":"2021-09-17T15:56:35CET","author":{"@id":"https://luoshi006.github.io/#/schema/person/2"},"publisher":{"@id":"https://luoshi006.github.io/#/schema/organization/1"},"image":{"@id":"https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/#/schema/image/2"}}]},{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://luoshi006.github.io/#/schema/person/2","name":"luoshi006","sameAs":["https://twitter.com/","https://www.linkedin.com/","https://github.com/luoshi006"]}]},{"@context":"https://schema.org","@graph":[{"@type":"ImageObject","@id":"https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/#/schema/image/2","url":"https://luoshi006.github.io/doks.png","contentUrl":"https://luoshi006.github.io/doks.png","caption":"Cubic Spline"}]}]}</script>
+<meta name=theme-color content="#fff">
+<link rel=apple-touch-icon sizes=180x180 href=https://luoshi006.github.io/apple-touch-icon.png>
+<link rel=icon type=image/png sizes=32x32 href=https://luoshi006.github.io/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=https://luoshi006.github.io/favicon-16x16.png>
+<link rel=manifest crossorigin=use-credentials href=https://luoshi006.github.io/site.webmanifest>
+</head>
+<body class="docs single">
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+<div class=container>
+<input class="menu-btn order-0" type=checkbox id=menu-btn>
+<label class="menu-icon d-md-none" for=menu-btn><span class=navicon></span></label>
+<a class="navbar-brand order-1 order-md-0 me-auto" href=https://luoshi006.github.io/>Home</a>
+<button id=mode class="btn btn-link order-2 order-md-4" type=button aria-label="Toggle mode">
+<span class=toggle-dark><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
+<span class=toggle-light><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+</button>
+<ul class="navbar-nav social-nav order-3 order-md-5">
+<li class=nav-item>
+<a class=nav-link href=https://github.com/luoshi006><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg><span class="ms-2 visually-hidden">GitHub</span></a>
+</li>
+</ul>
+<div class="collapse navbar-collapse order-4 order-md-1">
+<ul class="navbar-nav main-nav me-auto order-5 order-md-2"><li class="nav-item active">
+<a class=nav-link href=https://luoshi006.github.io/docs/learning/introduction/>Docs</a>
+</li>
+<li class=nav-item>
+<a class=nav-link href=https://luoshi006.github.io/blog/>Blog</a>
+</li>
+</ul>
+<div class="break order-6 d-md-none"></div>
+<form class="navbar-form flex-grow-1 order-7 order-md-3">
+<input id=userinput class="form-control is-search" type=search placeholder="Search docs..." aria-label="Search docs..." autocomplete=off>
+<div id=suggestions class="shadow bg-white rounded"></div>
+</form>
+</div>
+</div>
+</header>
+<div class="wrap container" role=document>
+<div class=content>
+<div class="row flex-xl-nowrap">
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+<nav class=docs-links aria-label="Main navigation">
+<ul class="list-unstyled collapsible-sidebar">
+<li class=mb-1>
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#learning aria-expanded=true>
+Learning
+</button>
+<div class="collapse show" id=learning>
+<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/introduction/>Introduction</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210903_traj_planning/>Traj Planning</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210903_rt_traj_optimization_for_racing/>RT Traj Optimization for Racing</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/>Optimal Trajectory in a Frenet Frame</a></li>
+<li><a class="docs-link rounded active" href=https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/>Cubic Spline</a></li>
+</ul>
+</div>
+</li>
+<li class=mb-1>
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#reading aria-expanded=false>
+Reading
+</button>
+<div class=collapse id=reading>
+<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/reading/01_code_reading/>Code Reading</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/reading/02_paper_reading/>Paper Reading</a></li>
+</ul>
+</div>
+</li>
+</ul>
+</nav>
+</div>
+<nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation">
+<div class=page-links>
+<h3>On this page</h3>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#summary>Summary</a></li>
+<li><a href=#flow>Flow</a></li>
+</ul>
+</nav>
+</div>
+</nav>
+<main class="docs-content col-lg-11 col-xl-9 mx-xl-auto">
+<h1>Cubic Spline</h1>
+<p class=lead></p>
+<hr>
+<blockquote>
+<p>refs: <a href=https://mathworld.wolfram.com/CubicSpline.html>https://mathworld.wolfram.com/CubicSpline.html</a></p>
+</blockquote>
+<div align=center>
+<img src=https://mathworld.wolfram.com/images/eps-gif/CubicSpline_700.gif title=image alt=cubic_spline width=300>
+</div>
+<h2 id=summary>Summary<a href=#summary class=anchor aria-hidden=true>#</a> </h2>
+<p>三次样条曲线由分段三次多项式组成，样条曲线依次穿过控制点 $m$ 。</p>
+<p>不同的边界条件可以产生各种样条； <strong>&ldquo;natural&rdquo;</strong> 三次样条：终点处的二阶导数置为 $0$ 。</p>
+<h2 id=flow>Flow<a href=#flow class=anchor aria-hidden=true>#</a> </h2>
+<p>对于一维的情况，给定 $n+1$ 个控制点 $(y_0, y_1, &mldr; , y_n)$ [Bartels et al.]，第 $i$ 段曲线表示为：</p>
+<p>$$ Y_i(t) = a_i + b_i t + c_i t^2 + d_i t^3$$</p>
+<p>其中，$t \in [0,1]$ ， $i=0, &mldr;, n-1$</p>
+<p>对于<strong>三阶多项式</strong>，构造如下方程组：</p>
+<p>$$Y_i(0) = y_i = a_i$$</p>
+<p>$$Y_i(1) = y_{i+1} = a_i+b_i+c_i+d_i$$</p>
+<p>$$Y'_i(0) = D_i = b_i$$</p>
+<p>$$Y'<em>i(1) = D</em>{i+1}=b_i+2 c_i +3 d_i$$</p>
+<p>四个未知数，四个方程，求解可得：</p>
+<p>$$a_i = y_i$$</p>
+<p>$$b_i=D_i$$</p>
+<p>$$c_i = 3(y_{i+1}-y_i)-2D_i-D_{i+1}$$</p>
+<p>$$d_i = 2(y_i-y_{i+1})+D_i+D_{i+1}$$</p>
+<hr>
+<p>对于<strong>分段曲线</strong>，要求二阶导连续，则对于内部点：</p>
+<p>$$Y_{i-1}(1)= y_i$$</p>
+<p>$$Y'_{i-1}(1)=Y'_i(0)$$</p>
+<p>$$Y_i(0) = y_i$$</p>
+<p>$$Y''_{i-1}(1) = Y''_i(0)$$</p>
+<p>对于端点：</p>
+<p>$$Y_0(0) = y_0$$</p>
+<p>$$Y_{n-1}(1)=y_n$$</p>
+<p>$4(n-1)+2=4n-2$ 个方程，$4n$ 个未知数，所以仍需额外提供两个约束：</p>
+<p>$$Y''_0(0) = 0$$</p>
+<p>$$Y''_{n-1}(1) = 0$$</p>
+<hr>
+<p>由以上公式，可以得到如下三对角系统（tridiagonal）</p>
+<pre><code class=language-md>$$\left[ \begin{matrix} 2&amp;1&amp;&amp;&amp;&amp;&amp; \\ 1&amp;4&amp;1&amp;&amp;&amp;&amp; \\ &amp;1&amp;4&amp;1&amp;&amp;&amp; \\ &amp;&amp;1&amp;4&amp;1&amp;&amp; \\ &amp;&amp;&amp; \ddots &amp; \ddots &amp; \ddots &amp; \\ &amp;&amp;&amp;&amp;1&amp;4&amp;1 \\&amp;&amp;&amp;&amp;&amp;1&amp;2 \end{matrix}  \right] \left[\begin{matrix} D_0\\D_1\\D_2\\D_3\\ \ddots \\D_{n-1} \\ D_n \end{matrix}\right] = \left[\begin{matrix} 3(y_1-y_0)\\3(y_2-y_0)\\3(y_3-y_1)\\ \ddots \\ 3(y_{n-1}-y_{n-3})\\3(y_n-y_{n-2}) \\ 3(y_n-y_{n-1})\end{matrix}\right]$$
+</code></pre>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/spline/images/2021-09-17_19-52.png title=image alt=formulate width=400>
+</div>
+如果曲线收尾相连，则
+<pre><code class=language-md>$$\left[ \begin{matrix} 4&amp;1&amp;&amp;&amp;&amp;&amp;1 \\ 1&amp;4&amp;1&amp;&amp;&amp;&amp; \\ &amp;1&amp;4&amp;1&amp;&amp;&amp; \\ &amp;&amp;1&amp;4&amp;1&amp;&amp; \\ &amp;&amp;&amp; \ddots &amp; \ddots &amp; \ddots &amp; \\ &amp;&amp;&amp;&amp;1&amp;4&amp;1 \\1&amp;&amp;&amp;&amp;&amp;1&amp;4 \end{matrix}  \right] \left[\begin{matrix} D_0\\D_1\\D_2\\D_3\\ \ddots \\D_{n-1} \\ D_n \end{matrix}\right] = \left[\begin{matrix} 3(y_1-y_n)\\3(y_2-y_0)\\3(y_3-y_1)\\ \ddots \\ 3(y_{n-1}-y_{n-3})\\3(y_n-y_{n-2}) \\ 3(y_0-y_{n-1})\end{matrix}\right]$$
+</code></pre>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/spline/images/2021-09-17_19-58.png title=image alt=formulate width=400>
+</div>
+<div class=my-n3></div>
+</main>
+</div>
+</div>
+</div>
+<footer class="footer text-muted">
+<div class=container>
+<div class=row>
+<div class="col-lg-8 order-last order-lg-first">
+<ul class=list-inline>
+<li class=list-inline-item>Powered by luoshi006</li>
+</ul>
+</div>
+<div class="col-lg-8 order-first order-lg-last text-lg-end">
+<ul class=list-inline>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+<script src=https://luoshi006.github.io/js/bootstrap.min.586171fec3966d1a44fa8aa2edb24b861dc3a72be8cc24aa4e0dabe4c312a0dae5fe1eaa7c93180a6211fa4d7c5461b0d228fdf741be2eae279a376dfa1e7d81.js integrity="sha512-WGFx/sOWbRpE+oqi7bJLhh3DpyvozCSqTg2r5MMSoNrl/h6qfJMYCmIR+k18VGGw0ij990G+Lq4nmjdt+h59gQ==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/highlight.min.e13cfba4c5524e30386cb9ea71f0f191f39d15b25b222f4b67549689f7c076158f42a2282446044f5cdacc76a6d003efbfa252a84aea0116703803b6339ae35f.js integrity="sha512-4Tz7pMVSTjA4bLnqcfDxkfOdFbJbIi9LZ1SWiffAdhWPQqIoJEYET1zazHam0APvv6JSqErqARZwOAO2M5rjXw==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/vendor/katex/dist/katex.min.7a4317f2b5d5ad65d4eb9573a27961c7404cf40db15c9637fa0cb380122c91c920aef6e4845b45e0b52c33aaae35921edcbe68420252c50f49ccd58660964ac0.js integrity="sha512-ekMX8rXVrWXU65Vzonlhx0BM9A2xXJY3+gyzgBIskckgrvbkhFtF4LUsM6quNZIe3L5oQgJSxQ9JzNWGYJZKwA==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/vendor/katex/dist/contrib/auto-render.min.916823ec103cf367b71e28a6f01513cb9c3ac6708ccb5229402ec46b8e30a8b25003db694df35d80e9dd666a371f327c6152790617b6256390c164109a90bd4c.js integrity="sha512-kWgj7BA882e3Hiim8BUTy5w6xnCMy1IpQC7Ea44wqLJQA9tpTfNdgOndZmo3HzJ8YVJ5Bhe2JWOQwWQQmpC9TA==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/main.min.25cdb7419aabf9517a7272eef61b8ae9bf11b7f8c76fdf5365aa2099652408dabbf0b32e428c16de79c5debbc905f5cc65abc8e3b4b8e8884d7774fca3312eb3.js integrity="sha512-Jc23QZqr+VF6cnLu9huK6b8Rt/jHb99TZaogmWUkCNq78LMuQowW3nnF3rvJBfXMZavI47S46IhNd3T8ozEusw==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/index.min.2f8f2ffe772faa4d94c4ed91f945bf21c453fef6c2bd4ecd979b590a3c665716ae95ba19d812889da66d1ade5d32641e14e70a794aa7ffcef612cce2a6330f15.js integrity="sha512-L48v/ncvqk2UxO2R+UW/IcRT/vbCvU7Nl5tZCjxmVxaulboZ2BKInaZtGt5dMmQeFOcKeUqn/872EszipjMPFQ==" crossorigin=anonymous defer></script>
+</body>
+</html>

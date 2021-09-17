@@ -1,0 +1,270 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/KaTeX_Main-Regular.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/KaTeX_Math-Italic.woff2 type=font/woff2 crossorigin>
+<link rel=stylesheet href=https://luoshi006.github.io/main.cfdf8ee24dc17db552bc8fdd2e163e3ab5ba8225ceae2ccb20537f67d7c14758ed3793e85f3733ed0afcac2bc5000b4a92e00a5d7d036ada71afedecb46a02e0.css integrity="sha512-z9+O4k3BfbVSvI/dLhY+OrW6giXOrizLIFN/Z9fBR1jtN5PoXzcz7Qr8rCvFAAtKkuAKXX0Datpxr+3stGoC4A==" crossorigin=anonymous>
+<noscript><style>img.lazyload{display:none}</style></noscript>
+<meta name=robots content="index, follow">
+<meta name=googlebot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name=bingbot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<title>Optimal Trajectory in a Frenet Frame - Home</title>
+<meta name=description content="luoshi006 Homepage">
+<link rel=canonical href=https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/>
+<meta property="og:locale" content="zh_CN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Optimal Trajectory in a Frenet Frame">
+<meta property="og:description" content="Optimal Trajectory Generation for Dynamic Street Scenarios in a Frenet Frame Local Path Planning and Motion Control for AGV in Positioning    https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver.git
+ Summary 常见的轨迹规划算法，想要得到最优轨迹，通常都需要动态障碍物的精确模型。文章中提出的是一种基于采样的反应式轨迹生成算法。根据路宽、速度范围、预测时间范围采样得到 大量轨迹，删除不可行轨迹后，根据代价进行排序，选择 最优轨迹 执行。
+【注】代码比论文好懂
+ TODO 未读懂的点
+ Bellman’s principle  动态规划最优算法   quintic_polynomial  KeyPoints  采样频率的影响  过低的采样频率可能引起超调（下）       Frenet 坐标系
+对于轨迹上一点 reference，以 切线方向 $\vec{t}_r$ 和法线方向 $\vec{n}_x$ 建立坐标系；$d(t)$ 表示机器人偏离轨迹的距离，$s(t)$ 表示机器人行程。
+图中，$\vec{t}_x, \vec{n}_x$ 仅用于表示机器人在 Frenet 坐标系的位姿；">
+<meta property="og:url" content="https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/">
+<meta property="og:site_name" content="Home">
+<meta property="article:published_time" content="2021-09-16T13:56:35+08:00">
+<meta property="article:modified_time" content="2021-09-16T13:56:35+08:00">
+<meta property="og:image" content="https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:site content>
+<meta name=twitter:creator content>
+<meta name=twitter:title content="Optimal Trajectory in a Frenet Frame">
+<meta name=twitter:description content>
+<meta name=twitter:image content="https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/">
+<meta name=twitter:image:alt content="Optimal Trajectory in a Frenet Frame">
+<script type=application/ld+json>{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://luoshi006.github.io/#/schema/organization/1","name":"Doks","url":"https://luoshi006.github.io/","sameAs":["https://twitter.com","https://github.com/luoshi006"],"logo":{"@type":"ImageObject","@id":"https://luoshi006.github.io/#/schema/image/1","url":"https://luoshi006.github.io/logo-doks.png","width":512,"height":512,"caption":"Doks"},"image":{"@id":"https://luoshi006.github.io/#/schema/image/1"}},{"@type":"WebSite","@id":"https://luoshi006.github.io/#/schema/website/1","url":"https://luoshi006.github.io/","name":"Home","description":"luoshi006 Homepage","publisher":{"@id":"https://luoshi006.github.io/#/schema/organization/1"}},{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/","url":"https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/","name":"Optimal Trajectory in a Frenet Frame","description":"","isPartOf":{"@id":"https://luoshi006.github.io/#/schema/website/1"},"about":{"@id":"https://luoshi006.github.io/#/schema/organization/1"},"datePublished":"2021-09-16T13:56:35CET","dateModified":"2021-09-16T13:56:35CET","breadcrumb":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/#/schema/breadcrumb/1"},"primaryImageOfPage":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/#/schema/image/2"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/"]}]},{"@type":"BreadcrumbList","@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/#/schema/breadcrumb/1","name":"Breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io","url":"https://luoshi006.github.io","name":"Home"}},{"@type":"ListItem","position":3,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/","url":"https://luoshi006.github.io/docs/","name":"Docs"}},{"@type":"ListItem","position":4,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/","url":"https://luoshi006.github.io/docs/learning/","name":"Learning"}},{"@type":"ListItem","position":5,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/traj_planning/","url":"https://luoshi006.github.io/docs/learning/traj_planning/","name":"Traj Planning"}},{"@type":"ListItem","position":6,"item":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/"}}]},{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":"https://luoshi006.github.io/#/schema/article/1","headline":"Optimal Trajectory in a Frenet Frame","description":"","isPartOf":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/"},"mainEntityOfPage":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/"},"datePublished":"2021-09-16T13:56:35CET","dateModified":"2021-09-16T13:56:35CET","author":{"@id":"https://luoshi006.github.io/#/schema/person/2"},"publisher":{"@id":"https://luoshi006.github.io/#/schema/organization/1"},"image":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/#/schema/image/2"}}]},{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://luoshi006.github.io/#/schema/person/2","name":"luoshi006","sameAs":["https://twitter.com/","https://www.linkedin.com/","https://github.com/luoshi006"]}]},{"@context":"https://schema.org","@graph":[{"@type":"ImageObject","@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/#/schema/image/2","url":"https://luoshi006.github.io/doks.png","contentUrl":"https://luoshi006.github.io/doks.png","caption":"Optimal Trajectory in a Frenet Frame"}]}]}</script>
+<meta name=theme-color content="#fff">
+<link rel=apple-touch-icon sizes=180x180 href=https://luoshi006.github.io/apple-touch-icon.png>
+<link rel=icon type=image/png sizes=32x32 href=https://luoshi006.github.io/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=https://luoshi006.github.io/favicon-16x16.png>
+<link rel=manifest crossorigin=use-credentials href=https://luoshi006.github.io/site.webmanifest>
+</head>
+<body class="docs single">
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+<div class=container>
+<input class="menu-btn order-0" type=checkbox id=menu-btn>
+<label class="menu-icon d-md-none" for=menu-btn><span class=navicon></span></label>
+<a class="navbar-brand order-1 order-md-0 me-auto" href=https://luoshi006.github.io/>Home</a>
+<button id=mode class="btn btn-link order-2 order-md-4" type=button aria-label="Toggle mode">
+<span class=toggle-dark><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
+<span class=toggle-light><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+</button>
+<ul class="navbar-nav social-nav order-3 order-md-5">
+<li class=nav-item>
+<a class=nav-link href=https://github.com/luoshi006><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg><span class="ms-2 visually-hidden">GitHub</span></a>
+</li>
+</ul>
+<div class="collapse navbar-collapse order-4 order-md-1">
+<ul class="navbar-nav main-nav me-auto order-5 order-md-2"><li class="nav-item active">
+<a class=nav-link href=https://luoshi006.github.io/docs/learning/introduction/>Docs</a>
+</li>
+<li class=nav-item>
+<a class=nav-link href=https://luoshi006.github.io/blog/>Blog</a>
+</li>
+</ul>
+<div class="break order-6 d-md-none"></div>
+<form class="navbar-form flex-grow-1 order-7 order-md-3">
+<input id=userinput class="form-control is-search" type=search placeholder="Search docs..." aria-label="Search docs..." autocomplete=off>
+<div id=suggestions class="shadow bg-white rounded"></div>
+</form>
+</div>
+</div>
+</header>
+<div class="wrap container" role=document>
+<div class=content>
+<div class="row flex-xl-nowrap">
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+<nav class=docs-links aria-label="Main navigation">
+<ul class="list-unstyled collapsible-sidebar">
+<li class=mb-1>
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#learning aria-expanded=true>
+Learning
+</button>
+<div class="collapse show" id=learning>
+<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/introduction/>Introduction</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210903_traj_planning/>Traj Planning</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210903_rt_traj_optimization_for_racing/>RT Traj Optimization for Racing</a></li>
+<li><a class="docs-link rounded active" href=https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/>Optimal Trajectory in a Frenet Frame</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/>Cubic Spline</a></li>
+</ul>
+</div>
+</li>
+<li class=mb-1>
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#reading aria-expanded=false>
+Reading
+</button>
+<div class=collapse id=reading>
+<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/reading/01_code_reading/>Code Reading</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/reading/02_paper_reading/>Paper Reading</a></li>
+</ul>
+</div>
+</li>
+</ul>
+</nav>
+</div>
+<nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation">
+<div class=page-links>
+<h3>On this page</h3>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#summary>Summary</a></li>
+<li><a href=#todo>TODO</a></li>
+<li><a href=#keypoints>KeyPoints</a></li>
+<li><a href=#frenet-流程>Frenet 流程</a>
+<ul>
+<li><a href=#lateral-movement>Lateral Movement</a></li>
+<li><a href=#longitudinal-movement>Longitudinal Movement</a></li>
+<li><a href=#combining-lateral--longitudinal-trajectories>Combining Lateral & Longitudinal Trajectories</a></li>
+<li><a href=#appendix>Appendix</a></li>
+</ul>
+</li>
+<li><a href=#测试>测试</a></li>
+</ul>
+</nav>
+</div>
+</nav>
+<main class="docs-content col-lg-11 col-xl-9 mx-xl-auto">
+<h1>Optimal Trajectory in a Frenet Frame</h1>
+<p class=lead></p>
+<hr>
+<blockquote>
+<ul>
+<li>Optimal Trajectory Generation for Dynamic Street Scenarios in a Frenet Frame</li>
+<li>Local Path Planning and Motion Control for AGV in Positioning</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><a href=https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver.git>https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver.git</a></p>
+</blockquote>
+<h2 id=summary>Summary<a href=#summary class=anchor aria-hidden=true>#</a> </h2>
+<p>常见的轨迹规划算法，想要得到最优轨迹，通常都需要动态障碍物的精确模型。文章中提出的是一种基于采样的反应式轨迹生成算法。根据路宽、速度范围、预测时间范围<strong>采样</strong>得到 <b><font color=999999>大量轨迹</font></b>，删除不可行轨迹后，根据<strong>代价</strong>进行排序，选择 <b><font color=FF0000>最优轨迹</font></b> 执行。</p>
+<p>【注】代码比论文好懂</p>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/frenet.gif title=image alt=frenet width=600>
+</div>
+<h2 id=todo>TODO<a href=#todo class=anchor aria-hidden=true>#</a> </h2>
+<p>未读懂的点</p>
+<ul>
+<li><input disabled type=checkbox> Bellman’s principle
+<ul>
+<li><input disabled type=checkbox> 动态规划最优算法</li>
+</ul>
+</li>
+<li><input disabled type=checkbox> quintic_polynomial</li>
+</ul>
+<h2 id=keypoints>KeyPoints<a href=#keypoints class=anchor aria-hidden=true>#</a> </h2>
+<ul>
+<li><strong>采样频率的影响</strong>
+<ul>
+<li>过低的采样频率可能引起超调（下）</li>
+</ul>
+</li>
+</ul>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/overshoot.png title=image alt=frenet-overshoot width=400>
+</div>
+<ul>
+<li>
+<p><strong>Frenet 坐标系</strong></p>
+<p>对于轨迹上一点 reference，以 切线方向 $\vec{t}_r$ 和法线方向 $\vec{n}_x$ 建立坐标系；$d(t)$ 表示机器人偏离轨迹的距离，$s(t)$ 表示机器人行程。<br>
+图中，$\vec{t}_x, \vec{n}_x$ 仅用于表示机器人在 Frenet 坐标系的位姿；</p>
+</li>
+</ul>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/frenet.png title=image alt=frenet-overshoot width=300>
+</div>
+<h2 id=frenet-流程>Frenet 流程<a href=#frenet-流程 class=anchor aria-hidden=true>#</a> </h2>
+<h3 id=lateral-movement>Lateral Movement<a href=#lateral-movement class=anchor aria-hidden=true>#</a> </h3>
+<p>起始状态 $[d_0, \dot{d_0}, \ddot{d_0}]$，沿用上一状态，保证运动连续性；
+目标状态要求 $\dot{d_1} = \ddot{d_1} = 0$，以保证最终的沿线运动，即，</p>
+<p>$$[d_1, \dot{d_1}, \ddot{d_1}, T]_{ij} = [d_i, 0, 0, T_j]$$</p>
+<p>对采样空间中的 $i, j$ 分别采样，得到 Frenet 坐标系的<strong>横向运动轨迹集</strong>。</p>
+<h3 id=longitudinal-movement>Longitudinal Movement<a href=#longitudinal-movement class=anchor aria-hidden=true>#</a> </h3>
+<p>起始状态 $[s_1, \dot{s_1}, \ddot{s_1}]$ ；</p>
+<p>根据场景和当前状态，对不同的目标状态采样：
+$$[s_1, \dot{s_1}, \ddot{s_1}, T]_{ij} = [ [s_1(T_j)+\Delta s_i], \dot{s}_1(T_j), \ddot{s}_1(T_j), T_j ]$$</p>
+<ul>
+<li><strong>Follow 跟随前车</strong>
+<ul>
+<li>根据交通规则和前车 [leader] 状态</li>
+</ul>
+</li>
+<li><strong>Merging 汇入车流</strong>
+<ul>
+<li>目标点在前、后两车的中间</li>
+</ul>
+</li>
+<li><strong>Stopping 停车</strong>
+<ul>
+<li>$s_{target} = s_{stop}$</li>
+<li>$\dot{s_t} = 0, \ddot{s_t} = 0$</li>
+</ul>
+</li>
+<li><strong>Velocity Keeping 定速巡航</strong>
+<ul>
+<li>只对速度、加速度约束求解</li>
+<li>$[\dot{s_1}, \ddot{s_1}, T]_{ij} = [[\dot{s_d} + \Delta \dot{s_i}], 0, T_j]$</li>
+</ul>
+</li>
+</ul>
+<h3 id=combining-lateral--longitudinal-trajectories>Combining Lateral & Longitudinal Trajectories<a href=#combining-lateral--longitudinal-trajectories class=anchor aria-hidden=true>#</a> </h3>
+<ul>
+<li>对 $T_{lat}$ 和 $T_{lon}$ 分别检查加速度，需注意保留部分加速能力，保证控制裕度
+<ul>
+<li>同时需要为 <em>巡线</em> 预留横向加速能力，因此需要保证目标轨迹的曲率上限；</li>
+</ul>
+</li>
+<li>在笛卡尔坐标系，检查曲率是否超限，检查是否碰撞；</li>
+<li>不引入障碍物的启发代价，从而避免复杂的参数调整</li>
+</ul>
+<h3 id=appendix>Appendix<a href=#appendix class=anchor aria-hidden=true>#</a> </h3>
+<blockquote>
+<p>Frenet coordinates -> Global coordinates</p>
+</blockquote>
+<p>$$[s, \dot{s}, \ddot{s}; d, \dot{d}, \ddot{d}/d, d', d''] \mapsto [\vec{x}, \theta_x, \kappa_x, v_x, a_x]$$</p>
+<p>其中，$\dot{d} = \frac{d}{dt}d$ ，$d' = \frac{d}{ds}d$</p>
+<p>一通复杂的转换，两个坐标系之间主要通过机器人<strong>行程</strong> $s$ 实现转换；所以，坐标转换是离散采样实现的。轨迹的<strong>非线性</strong>对转换精度影响比较大。</p>
+<h2 id=测试>测试<a href=#测试 class=anchor aria-hidden=true>#</a> </h2>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/frenet_all.gif title=image alt=frenet width=600>
+</div>
+<p>增大 $T_i$ 采样范围</p>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/frenet_enlarge_dt.gif title=image alt=frenet width=600>
+</div>
+<div class=my-n3></div>
+</main>
+</div>
+</div>
+</div>
+<footer class="footer text-muted">
+<div class=container>
+<div class=row>
+<div class="col-lg-8 order-last order-lg-first">
+<ul class=list-inline>
+<li class=list-inline-item>Powered by luoshi006</li>
+</ul>
+</div>
+<div class="col-lg-8 order-first order-lg-last text-lg-end">
+<ul class=list-inline>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+<script src=https://luoshi006.github.io/js/bootstrap.min.586171fec3966d1a44fa8aa2edb24b861dc3a72be8cc24aa4e0dabe4c312a0dae5fe1eaa7c93180a6211fa4d7c5461b0d228fdf741be2eae279a376dfa1e7d81.js integrity="sha512-WGFx/sOWbRpE+oqi7bJLhh3DpyvozCSqTg2r5MMSoNrl/h6qfJMYCmIR+k18VGGw0ij990G+Lq4nmjdt+h59gQ==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/highlight.min.e13cfba4c5524e30386cb9ea71f0f191f39d15b25b222f4b67549689f7c076158f42a2282446044f5cdacc76a6d003efbfa252a84aea0116703803b6339ae35f.js integrity="sha512-4Tz7pMVSTjA4bLnqcfDxkfOdFbJbIi9LZ1SWiffAdhWPQqIoJEYET1zazHam0APvv6JSqErqARZwOAO2M5rjXw==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/vendor/katex/dist/katex.min.7a4317f2b5d5ad65d4eb9573a27961c7404cf40db15c9637fa0cb380122c91c920aef6e4845b45e0b52c33aaae35921edcbe68420252c50f49ccd58660964ac0.js integrity="sha512-ekMX8rXVrWXU65Vzonlhx0BM9A2xXJY3+gyzgBIskckgrvbkhFtF4LUsM6quNZIe3L5oQgJSxQ9JzNWGYJZKwA==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/vendor/katex/dist/contrib/auto-render.min.916823ec103cf367b71e28a6f01513cb9c3ac6708ccb5229402ec46b8e30a8b25003db694df35d80e9dd666a371f327c6152790617b6256390c164109a90bd4c.js integrity="sha512-kWgj7BA882e3Hiim8BUTy5w6xnCMy1IpQC7Ea44wqLJQA9tpTfNdgOndZmo3HzJ8YVJ5Bhe2JWOQwWQQmpC9TA==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/main.min.25cdb7419aabf9517a7272eef61b8ae9bf11b7f8c76fdf5365aa2099652408dabbf0b32e428c16de79c5debbc905f5cc65abc8e3b4b8e8884d7774fca3312eb3.js integrity="sha512-Jc23QZqr+VF6cnLu9huK6b8Rt/jHb99TZaogmWUkCNq78LMuQowW3nnF3rvJBfXMZavI47S46IhNd3T8ozEusw==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/index.min.2f8f2ffe772faa4d94c4ed91f945bf21c453fef6c2bd4ecd979b590a3c665716ae95ba19d812889da66d1ade5d32641e14e70a794aa7ffcef612cce2a6330f15.js integrity="sha512-L48v/ncvqk2UxO2R+UW/IcRT/vbCvU7Nl5tZCjxmVxaulboZ2BKInaZtGt5dMmQeFOcKeUqn/872EszipjMPFQ==" crossorigin=anonymous defer></script>
+</body>
+</html>
