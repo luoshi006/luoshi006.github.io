@@ -17,6 +17,8 @@ weight: 042
 
 > refs: [https://mathworld.wolfram.com/CubicSpline.html](https://mathworld.wolfram.com/CubicSpline.html)
 
+> code: [https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver/cubic_spline_planner.py](https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver/blob/master/Optimal%20Trajectory%20in%20a%20Frenet%20Frame/cubic_spline_planner.py)
+
 <div align="center">
 <img src="https://mathworld.wolfram.com/images/eps-gif/CubicSpline_700.gif" title="image" alt="cubic_spline" width="300"/>
 </div>
@@ -45,6 +47,8 @@ $$Y'_i(0) = D_i = b_i$$
 
 $$Y'_i(1) = D_{i+1}=b_i+2 c_i +3 d_i$$
 
+### result
+
 四个未知数，四个方程，求解可得：
 
 $$a_i = y_i$$
@@ -56,6 +60,8 @@ $$c_i = 3(y_{i+1}-y_i)-2D_i-D_{i+1}$$
 $$d_i = 2(y_i-y_{i+1})+D_i+D_{i+1}$$
 
 ---
+
+### 求解 $D_i$
 
 对于**分段曲线**，要求二阶导连续，则对于内部点：
 
@@ -99,3 +105,7 @@ $$\left[ \begin{matrix} 4&1&&&&&1 \\ 1&4&1&&&& \\ &1&4&1&&& \\ &&1&4&1&& \\ &&& 
 <div align="center">
 <img src="/docs/learning/spline/images/2021-09-17_19-58.png" title="image" alt="formulate" width="400"/>
 </div>
+
+
+代入 [result ](/docs/learning/spline/20210917_cubic_spline/#result) 可以得到 $a_i, b_i, c_i, d_i$ 四个 vector，通过行程求 $i$，取出对应三阶多项式求解。
+
