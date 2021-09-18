@@ -18,3 +18,5 @@ toc: true
 记录学习过程....
 - [Traj Planning](/docs/learning/traj_planning/20210903_traj_planning)
 
+- spline
+  - [cubic_spline](/docs/learning/spline/20210917_cubic_spline) 简单描述了常见的 **三次样条曲线** 
