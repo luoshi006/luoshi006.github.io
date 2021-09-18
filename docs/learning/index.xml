@@ -15,7 +15,4 @@ Flow 对于一维的情况，给定 $n+1$ 个控制点 $(y_0, y_1, &amp;hellip; 
 $$ Y_i(t) = a_i + b_i t + c_i t^2 + d_i t^3$$
 其中，$t \in [0,1]$ ， $i=0, &amp;hellip;, n-1$
 对于三阶多项式，构造如下方程组：
-$$Y_i(0) = y_i = a_i$$
-$$Y_i(1) = y_{i+1} = a_i+b_i+c_i+d_i$$
-$$Y'_i(0) = D_i = b_i$$
-$$Y'i(1) = D{i+1}=b_i+2 c_i +3 d_i$$</description></item></channel></rss>
+$$ \begin{aligned} Y_i(0) &amp;amp;= y_i = a_i \newline Y_i(1) &amp;amp;= y_{i+1} = a_i+b_i+c_i+d_i \newline Y'_i(0) &amp;amp;= D_i = b_i \newline Y_i(1)' &amp;amp;= D_{i + 1}=b_i+2 c_i +3 d_i \newline \end{aligned} $$</description></item></channel></rss>
