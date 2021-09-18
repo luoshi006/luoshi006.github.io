@@ -39,25 +39,27 @@ $$ Y_i(t) = a_i + b_i t + c_i t^2 + d_i t^3$$
 
 对于**三阶多项式**，构造如下方程组：
 
-$$Y_i(0) = y_i = a_i$$
-
-$$Y_i(1) = y_{i+1} = a_i+b_i+c_i+d_i$$
-
-$$Y'_i(0) = D_i = b_i$$
-
-$$Y'_i(1) = D_{i+1}=b_i+2 c_i +3 d_i$$
+$$
+\begin{aligned}
+Y_i(0) &= y_i = a_i  \newline
+Y_i(1) &= y_{i+1} = a_i+b_i+c_i+d_i \newline
+Y'_i(0) &= D_i = b_i \newline
+Y_i(1)' &= D_{i + 1}=b_i+2 c_i +3 d_i \newline
+\end{aligned}
+$$
 
 ### result
 
-四个未知数，四个方程，求解可得：
+四个未知数，四个方程，求解可得第 $i$ 组分段曲线的参数：
 
-$$a_i = y_i$$
-
-$$b_i=D_i$$
-
-$$c_i = 3(y_{i+1}-y_i)-2D_i-D_{i+1}$$
-
-$$d_i = 2(y_i-y_{i+1})+D_i+D_{i+1}$$
+$$
+\begin{aligned}
+a_i &= y_i \tag{1} \newline
+b_i &=  D_i \newline
+c_i &= 3(y_{i+1}-y_i)-2D_i-D_{i+1}\newline
+d_i &= 2(y_i-y_{i+1})+D_i+D_{i+1}\newline
+\end{aligned}
+$$
 
 ---
 
@@ -65,13 +67,15 @@ $$d_i = 2(y_i-y_{i+1})+D_i+D_{i+1}$$
 
 对于**分段曲线**，要求二阶导连续，则对于内部点：
 
-$$Y_{i-1}(1)= y_i$$
+$$
+\begin{aligned}
+Y_{i-1}(1) &= y_i \newline
+Y'_{i-1}(1) &=Y'_i(0) \newline
+Y_i(0) &= y_i \newline
+Y''_{i-1}(1) &= Y''_i(0) \newline
+\end{aligned}
+$$
 
-$$Y'_{i-1}(1)=Y'_i(0)$$
-
-$$Y_i(0) = y_i$$
-
-$$Y''_{i-1}(1) = Y''_i(0)$$
 
 对于端点：
 
@@ -89,23 +93,14 @@ $$Y''_{n-1}(1) = 0$$
 
 由以上公式，可以得到如下三对角系统（tridiagonal）
 
-```md
-$$\left[ \begin{matrix} 2&1&&&&& \\ 1&4&1&&&& \\ &1&4&1&&& \\ &&1&4&1&& \\ &&& \ddots & \ddots & \ddots & \\ &&&&1&4&1 \\&&&&&1&2 \end{matrix}  \right] \left[\begin{matrix} D_0\\D_1\\D_2\\D_3\\ \ddots \\D_{n-1} \\ D_n \end{matrix}\right] = \left[\begin{matrix} 3(y_1-y_0)\\3(y_2-y_0)\\3(y_3-y_1)\\ \ddots \\ 3(y_{n-1}-y_{n-3})\\3(y_n-y_{n-2}) \\ 3(y_n-y_{n-1})\end{matrix}\right]$$
-```
 
-<div align="center">
-<img src="/docs/learning/spline/images/2021-09-17_19-52.png" title="image" alt="formulate" width="400"/>
-</div>
+$$\left[ \begin{matrix} 2&1&&&&& \\\ 1&4&1&&&& \\\ &1&4&1&&& \\\ &&1&4&1&& \\\ &&& \ddots & \ddots & \ddots & \\\ &&&&1&4&1 \\\ &&&&&1&2 \end{matrix}  \right] \left[\begin{matrix} D_0\\\D_1\\\D_2\\\D_3\\\ \ddots \\\D_{n-1} \\\ D_n \end{matrix}\right] = \left[\begin{matrix} 3(y_1-y_0)\\\3(y_2-y_0)\\\3(y_3-y_1)\\\ \ddots \\\ 3(y_{n-1}-y_{n-3})\\\3(y_n-y_{n-2}) \\\ 3(y_n-y_{n-1})\end{matrix}\right]$$
+
+
 如果曲线收尾相连，则
 
-```md
-$$\left[ \begin{matrix} 4&1&&&&&1 \\ 1&4&1&&&& \\ &1&4&1&&& \\ &&1&4&1&& \\ &&& \ddots & \ddots & \ddots & \\ &&&&1&4&1 \\1&&&&&1&4 \end{matrix}  \right] \left[\begin{matrix} D_0\\D_1\\D_2\\D_3\\ \ddots \\D_{n-1} \\ D_n \end{matrix}\right] = \left[\begin{matrix} 3(y_1-y_n)\\3(y_2-y_0)\\3(y_3-y_1)\\ \ddots \\ 3(y_{n-1}-y_{n-3})\\3(y_n-y_{n-2}) \\ 3(y_0-y_{n-1})\end{matrix}\right]$$
-```
-
-<div align="center">
-<img src="/docs/learning/spline/images/2021-09-17_19-58.png" title="image" alt="formulate" width="400"/>
-</div>
+$$\left[ \begin{matrix} 4&1&&&&&1 \\\ 1&4&1&&&& \\\ &1&4&1&&& \\\ &&1&4&1&& \\\ &&& \ddots & \ddots & \ddots & \\\ &&&&1&4&1 \\\1&&&&&1&4 \end{matrix}  \right] \left[\begin{matrix} D_0\\\D_1\\\D_2\\\D_3\\\ \ddots \\\D_{n-1} \\\ D_n \end{matrix}\right] = \left[\begin{matrix} 3(y_1-y_n)\\\3(y_2-y_0)\\\3(y_3-y_1)\\\ \ddots \\\ 3(y_{n-1}-y_{n-3})\\\3(y_n-y_{n-2}) \\\ 3(y_0-y_{n-1})\end{matrix}\right]$$
 
 
-代入 [result ](/docs/learning/spline/20210917_cubic_spline/#result) 可以得到 $a_i, b_i, c_i, d_i$ 四个 vector，通过行程求 $i$，取出对应三阶多项式求解。
+代入 [result ](/docs/learning/spline/20210917_cubic_spline/#result) $(1)$ 式，可以得到 $a_i, b_i, c_i, d_i$ 四个 vector，通过行程求 $i$，取出对应三阶多项式求解。
 
