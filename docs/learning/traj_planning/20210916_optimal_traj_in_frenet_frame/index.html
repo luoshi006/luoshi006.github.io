@@ -21,10 +21,10 @@
 <meta property="og:description" content="Optimal Trajectory Generation for Dynamic Street Scenarios in a Frenet Frame Local Path Planning and Motion Control for AGV in Positioning    https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver.git
  Summary 常见的轨迹规划算法，想要得到最优轨迹，通常都需要动态障碍物的精确模型。文章中提出的是一种基于采样的反应式轨迹生成算法。根据路宽、速度范围、预测时间范围采样得到 大量轨迹，删除不可行轨迹后，根据代价进行排序，选择 最优轨迹 执行。
 【注】代码比论文好懂
- TODO 未读懂的点
- Bellman’s principle  动态规划最优算法   quintic_polynomial  KeyPoints  采样频率的影响  过低的采样频率可能引起超调（下）       Frenet 坐标系
+ KeyPoints  采样频率的影响  过低的采样频率可能引起超调（下）       Frenet 坐标系
 对于轨迹上一点 reference，以 切线方向 $\vec{t}_r$ 和法线方向 $\vec{n}_x$ 建立坐标系；$d(t)$ 表示机器人偏离轨迹的距离，$s(t)$ 表示机器人行程。
-图中，$\vec{t}_x, \vec{n}_x$ 仅用于表示机器人在 Frenet 坐标系的位姿；">
+图中，$\vec{t}_x, \vec{n}_x$ 仅用于表示机器人在 Frenet 坐标系的位姿；
+   Frenet 流程 Lateral Movement 起始状态 $[d_0, \dot{d_0}, \ddot{d_0}]$，沿用上一状态，保证运动连续性； 目标状态要求 $\dot{d_1} = \ddot{d_1} = 0$，以保证最终的沿线运动，即，">
 <meta property="og:url" content="https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/">
 <meta property="og:site_name" content="Home">
 <meta property="article:published_time" content="2021-09-16T13:56:35+08:00">
@@ -116,14 +116,14 @@ Reading
 <nav id=TableOfContents>
 <ul>
 <li><a href=#summary>Summary</a></li>
-<li><a href=#todo>TODO</a></li>
 <li><a href=#keypoints>KeyPoints</a></li>
 <li><a href=#frenet-流程>Frenet 流程</a>
 <ul>
 <li><a href=#lateral-movement>Lateral Movement</a></li>
 <li><a href=#longitudinal-movement>Longitudinal Movement</a></li>
 <li><a href=#combining-lateral--longitudinal-trajectories>Combining Lateral & Longitudinal Trajectories</a></li>
-<li><a href=#appendix>Appendix</a></li>
+<li><a href=#appendix-i>Appendix I</a></li>
+<li><a href=#appendix-ii>Appendix II</a></li>
 </ul>
 </li>
 <li><a href=#测试>测试</a></li>
@@ -150,16 +150,6 @@ Reading
 <div align=center>
 <img src=https://luoshi006.github.io/docs/learning/traj_planning/images/frenet.gif title=image alt=frenet width=600>
 </div>
-<h2 id=todo>TODO<a href=#todo class=anchor aria-hidden=true>#</a> </h2>
-<p>未读懂的点</p>
-<ul>
-<li><input disabled type=checkbox> Bellman’s principle
-<ul>
-<li><input disabled type=checkbox> 动态规划最优算法</li>
-</ul>
-</li>
-<li><input disabled type=checkbox> quintic_polynomial</li>
-</ul>
 <h2 id=keypoints>KeyPoints<a href=#keypoints class=anchor aria-hidden=true>#</a> </h2>
 <ul>
 <li><strong>采样频率的影响</strong>
@@ -225,13 +215,76 @@ $$[s_1, \dot{s_1}, \ddot{s_1}, T]_{ij} = [ [s_1(T_j)+\Delta s_i], \dot{s}_1(T_j)
 <li>在笛卡尔坐标系，检查曲率是否超限，检查是否碰撞；</li>
 <li>不引入障碍物的启发代价，从而避免复杂的参数调整</li>
 </ul>
-<h3 id=appendix>Appendix<a href=#appendix class=anchor aria-hidden=true>#</a> </h3>
+<h3 id=appendix-i>Appendix I<a href=#appendix-i class=anchor aria-hidden=true>#</a> </h3>
 <blockquote>
 <p>Frenet coordinates -> Global coordinates</p>
 </blockquote>
 <p>$$[s, \dot{s}, \ddot{s}; d, \dot{d}, \ddot{d}/d, d', d''] \mapsto [\vec{x}, \theta_x, \kappa_x, v_x, a_x]$$</p>
 <p>其中，$\dot{d} = \frac{d}{dt}d$ ，$d' = \frac{d}{ds}d$</p>
 <p>一通复杂的转换，两个坐标系之间主要通过机器人<strong>行程</strong> $s$ 实现转换；所以，坐标转换是离散采样实现的。轨迹的<strong>非线性</strong>对转换精度影响比较大。</p>
+<h3 id=appendix-ii>Appendix II<a href=#appendix-ii class=anchor aria-hidden=true>#</a> </h3>
+<blockquote>
+<p>已知首尾状态，求解 四阶、五阶多项式</p>
+</blockquote>
+<h4 id=quintic-polynomial>Quintic Polynomial<a href=#quintic-polynomial class=anchor aria-hidden=true>#</a> </h4>
+<p><strong>五次多项式</strong> 标准形式：</p>
+<p>$$ s(t) = a_0 + a_1 t + a_2 t^2 + a_3 t^3 + a_4 t^4 + a_5 t^5$$</p>
+<p>已知，起始状态 $ t=0$ 时的状态，即
+$$
+\begin{aligned}
+a_0 &= s_0 \newline
+a_1 &= \dot{s}_0 \newline
+a_2 &= \frac{\ddot{s}_0}{2} \newline
+\end{aligned}
+$$
+代入标准形式，得到终点 $t=T$ 的状态：
+$$
+\begin{aligned}
+s_T &= s_0 + \dot{s_0}T + \frac{\ddot{s}_0}{2}T^2 + a_3 T^3 +a_4 T^4 +a_5 T^5 \newline
+\dot{s}_T &= \dot{s}_0 + \ddot{s}_0 T + 3 a_3 T^2 + 4 a_4 T^3 + 5 a_5 T^4\newline
+\ddot{s}_T &= \ddot{s}_0 + 5 a_3 T + 12 a_4 T^2 + 20 a_5 T^3 \newline
+\end{aligned}
+$$
+整理，
+$$
+\begin{aligned}
+a_3 T^3 +a_4 T^4 +a_5 T^5 &= s_T - s_0 - \dot{s_0}T - \frac{\ddot{s}_0}{2}T^2 \newline
+3 a_3 T^2 + 4 a_4 T^3 + 5 a_5 T^4 &= \dot{s}_T - \dot{s}_0 - \ddot{s}_0 T \newline
+5 a_3 T + 12 a_4 T^2 + 20 a_5 T^3 &= \ddot{s}_T - \ddot{s}_0 \newline
+\end{aligned}
+$$</p>
+<p>写成矩阵形式
+$$
+\begin{aligned}
+a_3 T^3 +a_4 T^4 +a_5 T^5 &= s_T - s_0 - \dot{s_0}T - \frac{\ddot{s}_0}{2}T^2 \newline
+3 a_3 T^2 + 4 a_4 T^3 + 5 a_5 T^4 &= \dot{s}_T - \dot{s}_0 - \ddot{s}_0 T \newline
+5 a_3 T + 12 a_4 T^2 + 20 a_5 T^3 &= \ddot{s}_T - \ddot{s}_0 \newline
+\end{aligned}
+$$</p>
+<p>矩阵形式：</p>
+<p>$$ \left[ \begin{matrix} T^3 & T^4 & T^5 \\ 3T^2 & 4T^3 & 5T^4 \\ 6T & 12T^2 & 20 T^3\end{matrix} \right] \left[ \begin{matrix} a_3 \\ a_4 \\ a_5 \end{matrix} \right] = \left[ \begin{matrix} s_T - s_0 - \dot{s_0}T - \frac{\ddot{s}_0}{2}T^2 \\ \dot{s}_T - \dot{s}_0 - \ddot{s}_0 T \\ \ddot{s}_T - \ddot{s}_0 \end{matrix} \right] $$</p>
+<p>通过矩阵求逆，可以得到 $[a_3, a_4, a_5]$</p>
+<h4 id=quartic-polynomial>Quartic Polynomial<a href=#quartic-polynomial class=anchor aria-hidden=true>#</a> </h4>
+<p><strong>四阶多项式</strong> 标准形式：
+$$ s(t) = a_0 + a_1 t + a_2 t^2 + a_3 t^3 + a_4 t^4 $$</p>
+<p>同理
+$$
+\begin{aligned}
+a_0 &= s_0 \newline
+a_1 &= \dot{s}_0 \newline
+a_2 &= \frac{\ddot{s}_0}{2} \newline
+\end{aligned}
+$$
+末端状态：
+$$
+\begin{aligned}
+\dot{s}_T &= \dot{s}_0 + \ddot{s}_0 T + 3 a_3 T^2 + 4 a_4 T^3 \newline
+\ddot{s}_T &= \ddot{s}_0 + 5 a_3 T + 12 a_4 T^2 \newline
+\end{aligned}
+$$</p>
+<p>矩阵形式：
+$$ \left[ \begin{matrix} 3T^2 & 4T^3 \\ 6T & 12T^2 \end{matrix} \right] \left[ \begin{matrix} a_3 \\ a_4 \end{matrix} \right] = \left[ \begin{matrix} \dot{s}_T - \dot{s}_0 - \ddot{s}_0 T \\ \ddot{s}_T - \ddot{s}_0 \end{matrix} \right] $$
+解得 $[a_3, a_4]$。</p>
 <h2 id=测试>测试<a href=#测试 class=anchor aria-hidden=true>#</a> </h2>
 <div align=center>
 <img src=https://luoshi006.github.io/docs/learning/traj_planning/images/frenet_all.gif title=image alt=frenet width=600>
@@ -265,6 +318,6 @@ $$[s_1, \dot{s_1}, \ddot{s_1}, T]_{ij} = [ [s_1(T_j)+\Delta s_i], \dot{s}_1(T_j)
 <script src=https://luoshi006.github.io/js/vendor/katex/dist/katex.min.7a4317f2b5d5ad65d4eb9573a27961c7404cf40db15c9637fa0cb380122c91c920aef6e4845b45e0b52c33aaae35921edcbe68420252c50f49ccd58660964ac0.js integrity="sha512-ekMX8rXVrWXU65Vzonlhx0BM9A2xXJY3+gyzgBIskckgrvbkhFtF4LUsM6quNZIe3L5oQgJSxQ9JzNWGYJZKwA==" crossorigin=anonymous defer></script>
 <script src=https://luoshi006.github.io/js/vendor/katex/dist/contrib/auto-render.min.916823ec103cf367b71e28a6f01513cb9c3ac6708ccb5229402ec46b8e30a8b25003db694df35d80e9dd666a371f327c6152790617b6256390c164109a90bd4c.js integrity="sha512-kWgj7BA882e3Hiim8BUTy5w6xnCMy1IpQC7Ea44wqLJQA9tpTfNdgOndZmo3HzJ8YVJ5Bhe2JWOQwWQQmpC9TA==" crossorigin=anonymous defer></script>
 <script src=https://luoshi006.github.io/main.min.25cdb7419aabf9517a7272eef61b8ae9bf11b7f8c76fdf5365aa2099652408dabbf0b32e428c16de79c5debbc905f5cc65abc8e3b4b8e8884d7774fca3312eb3.js integrity="sha512-Jc23QZqr+VF6cnLu9huK6b8Rt/jHb99TZaogmWUkCNq78LMuQowW3nnF3rvJBfXMZavI47S46IhNd3T8ozEusw==" crossorigin=anonymous defer></script>
-<script src=https://luoshi006.github.io/index.min.c906febb9e2740b558beb9dcd38fa69ea1edd8671170a75adf262fc4d72c10ab0c94b0d7c91ea984dede0ef477bdc97cc938b998e787a03c8af39c1c8018bf77.js integrity="sha512-yQb+u54nQLVYvrnc04+mnqHt2GcRcKda3yYvxNcsEKsMlLDXyR6phN7eDvR3vcl8yTi5mOeHoDyK85wcgBi/dw==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/index.min.f97774d9593f3507340cb50abba8f2014c10d4c88718d1543d750bf27984289285c6d5fbada43656c34207a5cde80d44c8b428954b6b373006b4714451c2cf0e.js integrity="sha512-+Xd02Vk/NQc0DLUKu6jyAUwQ1MiHGNFUPXUL8nmEKJKFxtX7raQ2VsNCB6XN6A1EyLQolUtrNzAGtHFEUcLPDg==" crossorigin=anonymous defer></script>
 </body>
 </html>
