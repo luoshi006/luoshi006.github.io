@@ -30,13 +30,6 @@ weight: 022
 <img src="/docs/learning/traj_planning/images/frenet.gif" title="image" alt="frenet" width="600"/>
 </div>
 
-## TODO
-未读懂的点
-
-- [ ] Bellman’s principle
-    - [ ] 动态规划最优算法
-- [ ] quintic_polynomial
-
 ## KeyPoints
 
 - **采样频率的影响**
@@ -92,7 +85,7 @@ $$[s_1, \dot{s_1}, \ddot{s_1}, T]_{ij} = [ [s_1(T_j)+\Delta s_i], \dot{s}_1(T_j)
 
 
 
-### Appendix 
+### Appendix I
 
 >  Frenet coordinates -> Global coordinates
 
@@ -101,6 +94,80 @@ $$[s, \dot{s}, \ddot{s}; d, \dot{d}, \ddot{d}/d, d', d''] \mapsto [\vec{x}, \the
 其中，$\dot{d} = \frac{d}{dt}d$ ，$d' = \frac{d}{ds}d$ 
 
 一通复杂的转换，两个坐标系之间主要通过机器人**行程** $s$ 实现转换；所以，坐标转换是离散采样实现的。轨迹的**非线性**对转换精度影响比较大。
+
+### Appendix II
+
+> 已知首尾状态，求解 四阶、五阶多项式
+
+#### Quintic Polynomial
+
+**五次多项式** 标准形式：
+
+$$ s(t) = a_0 + a_1 t + a_2 t^2 + a_3 t^3 + a_4 t^4 + a_5 t^5$$
+
+已知，起始状态 $ t=0$ 时的状态，即
+$$
+\begin{aligned}
+a_0 &= s_0  \newline
+a_1 &= \dot{s}_0 \newline
+a_2 &= \frac{\ddot{s}_0}{2} \newline
+\end{aligned}
+$$
+代入标准形式，得到终点 $t=T$ 的状态：
+$$
+\begin{aligned}
+s_T &= s_0 + \dot{s_0}T + \frac{\ddot{s}_0}{2}T^2 + a_3 T^3 +a_4 T^4 +a_5 T^5 \newline
+\dot{s}_T &= \dot{s}_0 + \ddot{s}_0 T + 3 a_3 T^2 + 4 a_4 T^3 + 5 a_5 T^4\newline
+\ddot{s}_T &= \ddot{s}_0 + 5 a_3 T + 12 a_4 T^2 + 20 a_5 T^3 \newline
+\end{aligned}
+$$
+整理，
+$$
+\begin{aligned}
+a_3 T^3 +a_4 T^4 +a_5 T^5 &= s_T - s_0 - \dot{s_0}T - \frac{\ddot{s}_0}{2}T^2 \newline
+3 a_3 T^2 + 4 a_4 T^3 + 5 a_5 T^4 &= \dot{s}_T - \dot{s}_0 - \ddot{s}_0 T \newline
+5 a_3 T + 12 a_4 T^2 + 20 a_5 T^3 &= \ddot{s}_T - \ddot{s}_0  \newline
+\end{aligned}
+$$
+
+写成矩阵形式
+$$
+\begin{aligned}
+a_3 T^3 +a_4 T^4 +a_5 T^5 &= s_T - s_0 - \dot{s_0}T - \frac{\ddot{s}_0}{2}T^2 \newline
+3 a_3 T^2 + 4 a_4 T^3 + 5 a_5 T^4 &= \dot{s}_T - \dot{s}_0 - \ddot{s}_0 T \newline
+5 a_3 T + 12 a_4 T^2 + 20 a_5 T^3 &= \ddot{s}_T - \ddot{s}_0  \newline
+\end{aligned}
+$$
+
+矩阵形式：
+
+$$ \left[ \begin{matrix} T^3 & T^4 & T^5 \\\  3T^2 & 4T^3 & 5T^4 \\\  6T & 12T^2 & 20 T^3\end{matrix} \right]   \left[ \begin{matrix} a_3 \\\ a_4 \\\ a_5 \end{matrix} \right]  =  \left[ \begin{matrix} s_T - s_0 - \dot{s_0}T - \frac{\ddot{s}_0}{2}T^2 \\\ \dot{s}_T - \dot{s}_0 - \ddot{s}_0 T \\\ \ddot{s}_T - \ddot{s}_0 \end{matrix} \right] $$
+
+通过矩阵求逆，可以得到 $[a_3, a_4, a_5]$
+
+#### Quartic Polynomial
+**四阶多项式** 标准形式：
+$$ s(t) = a_0 + a_1 t + a_2 t^2 + a_3 t^3 + a_4 t^4 $$
+
+同理
+$$
+\begin{aligned}
+a_0 &= s_0  \newline
+a_1 &= \dot{s}_0 \newline
+a_2 &= \frac{\ddot{s}_0}{2} \newline
+\end{aligned}
+$$
+末端状态：
+$$
+\begin{aligned}
+\dot{s}_T &= \dot{s}_0 + \ddot{s}_0 T + 3 a_3 T^2 + 4 a_4 T^3 \newline
+\ddot{s}_T &= \ddot{s}_0 + 5 a_3 T + 12 a_4 T^2 \newline
+\end{aligned}
+$$
+
+矩阵形式：
+$$ \left[ \begin{matrix} 3T^2 & 4T^3  \\\  6T & 12T^2 \end{matrix} \right]   \left[ \begin{matrix} a_3 \\\ a_4  \end{matrix} \right]  =  \left[ \begin{matrix}  \dot{s}_T - \dot{s}_0 - \ddot{s}_0 T \\\ \ddot{s}_T - \ddot{s}_0 \end{matrix} \right] $$
+解得 $[a_3, a_4]$。
 
 ## 测试
 
