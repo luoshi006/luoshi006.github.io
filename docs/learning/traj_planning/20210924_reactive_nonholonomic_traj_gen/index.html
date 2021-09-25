@@ -1,0 +1,307 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/KaTeX_Main-Regular.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/KaTeX_Math-Italic.woff2 type=font/woff2 crossorigin>
+<link rel=stylesheet href=https://luoshi006.github.io/main.cfdf8ee24dc17db552bc8fdd2e163e3ab5ba8225ceae2ccb20537f67d7c14758ed3793e85f3733ed0afcac2bc5000b4a92e00a5d7d036ada71afedecb46a02e0.css integrity="sha512-z9+O4k3BfbVSvI/dLhY+OrW6giXOrizLIFN/Z9fBR1jtN5PoXzcz7Qr8rCvFAAtKkuAKXX0Datpxr+3stGoC4A==" crossorigin=anonymous>
+<noscript><style>img.lazyload{display:none}</style></noscript>
+<meta name=robots content="index, follow">
+<meta name=googlebot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name=bingbot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<title>Reactive Nonholonomic Traj Gen - Home</title>
+<meta name=description content="luoshi006 Homepage">
+<link rel=canonical href=https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/>
+<meta property="og:locale" content="zh_CN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reactive Nonholonomic Traj Gen">
+<meta property="og:description" content="Reactive Nonholonomic Trajectory Generation via Parametric Optimal Control - - Alonzo Kelly, Bryan Nagy
+   https://github.com/lrm2017/SpiralsTrajactory.git https://github.com/jsford/PolyTraj.git https://github.com/berlala/Basic_SD_Algorithm.git    Abstract 文章讨论了怎么实时生成一条轨迹，将轨迹问题建模成最优控制问题，进而转化为非线性优化问题。主要共享在于 三阶曲率多项式 的公式推导及求解。
+注：第二章介绍最优控制部分没看懂，对求解不影响，忽略；
+【Keywords】Polynomial Spirals , Clothoids
+Solution Using Polynomial Spirals 3.2 Clothoids 回旋曲线 定义其曲率为线性变化：
+$$ \kappa (s) = a + bs$$
+3.3 Polynomial Spirals 场景：已知起始点和终点的状态，求一条曲线
+将曲率表示为 n 阶多项式，用以满足端点的约束条件；
+3.4 Reduction to Decoupled Quadratures 多项式螺旋线可以通过封闭形式积分得到航向角 heading
+$$ \begin{aligned} \kappa(s)&=a+bs+cs^2+ds^3 \newline \theta(s)&=\theta_0 + \int \kappa ds =\theta_0 + as+ \frac{bs^2}{2} + \frac{cs^3}{3}+ \frac{ds^4}{4} \end{aligned} \tag{1} $$">
+<meta property="og:url" content="https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/">
+<meta property="og:site_name" content="Home">
+<meta property="article:published_time" content="2021-09-24T17:25:10+08:00">
+<meta property="article:modified_time" content="2021-09-24T17:25:10+08:00">
+<meta property="og:image" content="https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:site content>
+<meta name=twitter:creator content>
+<meta name=twitter:title content="Reactive Nonholonomic Traj Gen">
+<meta name=twitter:description content>
+<meta name=twitter:image content="https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/">
+<meta name=twitter:image:alt content="Reactive Nonholonomic Traj Gen">
+<script type=application/ld+json>{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://luoshi006.github.io/#/schema/organization/1","name":"Doks","url":"https://luoshi006.github.io/","sameAs":["https://twitter.com","https://github.com/luoshi006"],"logo":{"@type":"ImageObject","@id":"https://luoshi006.github.io/#/schema/image/1","url":"https://luoshi006.github.io/logo-doks.png","width":512,"height":512,"caption":"Doks"},"image":{"@id":"https://luoshi006.github.io/#/schema/image/1"}},{"@type":"WebSite","@id":"https://luoshi006.github.io/#/schema/website/1","url":"https://luoshi006.github.io/","name":"Home","description":"luoshi006 Homepage","publisher":{"@id":"https://luoshi006.github.io/#/schema/organization/1"}},{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/","url":"https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/","name":"Reactive Nonholonomic Traj Gen","description":"","isPartOf":{"@id":"https://luoshi006.github.io/#/schema/website/1"},"about":{"@id":"https://luoshi006.github.io/#/schema/organization/1"},"datePublished":"2021-09-24T17:25:10CET","dateModified":"2021-09-24T17:25:10CET","breadcrumb":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/#/schema/breadcrumb/1"},"primaryImageOfPage":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/#/schema/image/2"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/"]}]},{"@type":"BreadcrumbList","@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/#/schema/breadcrumb/1","name":"Breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io","url":"https://luoshi006.github.io","name":"Home"}},{"@type":"ListItem","position":3,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/","url":"https://luoshi006.github.io/docs/","name":"Docs"}},{"@type":"ListItem","position":4,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/","url":"https://luoshi006.github.io/docs/learning/","name":"Learning"}},{"@type":"ListItem","position":5,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/traj_planning/","url":"https://luoshi006.github.io/docs/learning/traj_planning/","name":"Traj Planning"}},{"@type":"ListItem","position":6,"item":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/"}}]},{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":"https://luoshi006.github.io/#/schema/article/1","headline":"Reactive Nonholonomic Traj Gen","description":"","isPartOf":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/"},"mainEntityOfPage":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/"},"datePublished":"2021-09-24T17:25:10CET","dateModified":"2021-09-24T17:25:10CET","author":{"@id":"https://luoshi006.github.io/#/schema/person/2"},"publisher":{"@id":"https://luoshi006.github.io/#/schema/organization/1"},"image":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/#/schema/image/2"}}]},{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://luoshi006.github.io/#/schema/person/2","name":"luoshi006","sameAs":["https://twitter.com/","https://www.linkedin.com/","https://github.com/luoshi006"]}]},{"@context":"https://schema.org","@graph":[{"@type":"ImageObject","@id":"https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/#/schema/image/2","url":"https://luoshi006.github.io/doks.png","contentUrl":"https://luoshi006.github.io/doks.png","caption":"Reactive Nonholonomic Traj Gen"}]}]}</script>
+<meta name=theme-color content="#fff">
+<link rel=apple-touch-icon sizes=180x180 href=https://luoshi006.github.io/apple-touch-icon.png>
+<link rel=icon type=image/png sizes=32x32 href=https://luoshi006.github.io/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=https://luoshi006.github.io/favicon-16x16.png>
+<link rel=manifest crossorigin=use-credentials href=https://luoshi006.github.io/site.webmanifest>
+</head>
+<body class="docs single">
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+<div class=container>
+<input class="menu-btn order-0" type=checkbox id=menu-btn>
+<label class="menu-icon d-md-none" for=menu-btn><span class=navicon></span></label>
+<a class="navbar-brand order-1 order-md-0 me-auto" href=https://luoshi006.github.io/>Home</a>
+<button id=mode class="btn btn-link order-2 order-md-4" type=button aria-label="Toggle mode">
+<span class=toggle-dark><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
+<span class=toggle-light><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+</button>
+<ul class="navbar-nav social-nav order-3 order-md-5">
+<li class=nav-item>
+<a class=nav-link href=https://github.com/luoshi006><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg><span class="ms-2 visually-hidden">GitHub</span></a>
+</li>
+</ul>
+<div class="collapse navbar-collapse order-4 order-md-1">
+<ul class="navbar-nav main-nav me-auto order-5 order-md-2"><li class="nav-item active">
+<a class=nav-link href=https://luoshi006.github.io/docs/learning/introduction/>Docs</a>
+</li>
+<li class=nav-item>
+<a class=nav-link href=https://luoshi006.github.io/blog/>Blog</a>
+</li>
+</ul>
+<div class="break order-6 d-md-none"></div>
+<form class="navbar-form flex-grow-1 order-7 order-md-3">
+<input id=userinput class="form-control is-search" type=search placeholder="Search docs..." aria-label="Search docs..." autocomplete=off>
+<div id=suggestions class="shadow bg-white rounded"></div>
+</form>
+</div>
+</div>
+</header>
+<div class="wrap container" role=document>
+<div class=content>
+<div class="row flex-xl-nowrap">
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+<nav class=docs-links aria-label="Main navigation">
+<ul class="list-unstyled collapsible-sidebar">
+<li class=mb-1>
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#learning aria-expanded=true>
+Learning
+</button>
+<div class="collapse show" id=learning>
+<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/introduction/>Introduction</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210903_traj_planning/>Traj Planning</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210903_rt_traj_optimization_for_racing/>RT Traj Optimization for Racing</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/>Optimal Trajectory in a Frenet Frame</a></li>
+<li><a class="docs-link rounded active" href=https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/>Reactive Nonholonomic Traj Gen</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/>Cubic Spline</a></li>
+</ul>
+</div>
+</li>
+<li class=mb-1>
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#reading aria-expanded=false>
+Reading
+</button>
+<div class=collapse id=reading>
+<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/reading/01_code_reading/>Code Reading</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/reading/02_paper_reading/>Paper Reading</a></li>
+</ul>
+</div>
+</li>
+</ul>
+</nav>
+</div>
+<nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation">
+<div class=page-links>
+<h3>On this page</h3>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#abstract>Abstract</a></li>
+<li><a href=#solution-using-polynomial-spirals>Solution Using Polynomial Spirals</a>
+<ul>
+<li><a href=#32-clothoids>3.2 Clothoids</a></li>
+<li><a href=#33-polynomial-spirals>3.3 Polynomial Spirals</a></li>
+<li><a href=#34-reduction-to-decoupled-quadratures>3.4 Reduction to Decoupled Quadratures</a></li>
+<li><a href=#-求解多项式>· 求解多项式</a></li>
+<li><a href=#other>Other</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</nav>
+<main class="docs-content col-lg-11 col-xl-9 mx-xl-auto">
+<h1>Reactive Nonholonomic Traj Gen</h1>
+<p class=lead></p>
+<hr>
+<blockquote>
+<p>Reactive Nonholonomic Trajectory Generation via Parametric Optimal Control - - <em>Alonzo Kelly, Bryan Nagy</em></p>
+</blockquote>
+<blockquote>
+<ul>
+<li><a href=https://github.com/lrm2017/SpiralsTrajactory.git>https://github.com/lrm2017/SpiralsTrajactory.git</a></li>
+<li><a href=https://github.com/jsford/PolyTraj.git>https://github.com/jsford/PolyTraj.git</a></li>
+<li><a href=https://github.com/berlala/Basic_SD_Algorithm.git>https://github.com/berlala/Basic_SD_Algorithm.git</a></li>
+</ul>
+</blockquote>
+<hr>
+<h2 id=abstract>Abstract<a href=#abstract class=anchor aria-hidden=true>#</a> </h2>
+<p>文章讨论了怎么实时生成一条轨迹，将轨迹问题建模成最优控制问题，进而转化为非线性优化问题。主要共享在于 <strong>三阶曲率多项式</strong> 的公式推导及求解。</p>
+<p>注：第二章介绍最优控制部分没看懂，对求解不影响，忽略；</p>
+<p>【Keywords】Polynomial <a href=https://www.2dcurves.com/spiral/spiralps.html>Spirals</a> , <a href=https://zh.wikipedia.org/wiki/%E7%BE%8A%E8%A7%92%E8%9E%BA%E7%BA%BF>Clothoids</a></p>
+<h2 id=solution-using-polynomial-spirals>Solution Using Polynomial Spirals<a href=#solution-using-polynomial-spirals class=anchor aria-hidden=true>#</a> </h2>
+<h3 id=32-clothoids>3.2 Clothoids<a href=#32-clothoids class=anchor aria-hidden=true>#</a> </h3>
+<p>回旋曲线 定义其曲率为线性变化：</p>
+<p>$$ \kappa (s) = a + bs$$</p>
+<h3 id=33-polynomial-spirals>3.3 Polynomial Spirals<a href=#33-polynomial-spirals class=anchor aria-hidden=true>#</a> </h3>
+<p>场景：已知起始点和终点的状态，求一条曲线</p>
+<p>将曲率表示为 n 阶多项式，用以满足端点的约束条件；</p>
+<h3 id=34-reduction-to-decoupled-quadratures>3.4 Reduction to Decoupled Quadratures<a href=#34-reduction-to-decoupled-quadratures class=anchor aria-hidden=true>#</a> </h3>
+<p>多项式螺旋线可以通过封闭形式积分得到航向角 heading</p>
+<p>$$
+\begin{aligned}
+\kappa(s)&=a+bs+cs^2+ds^3 \newline
+\theta(s)&=\theta_0 + \int \kappa ds =\theta_0 + as+ \frac{bs^2}{2} + \frac{cs^3}{3}+ \frac{ds^4}{4}
+\end{aligned}
+\tag{1}
+$$</p>
+<p>再对行程积分，[generalized Fresnel integrals 广义菲涅尔积分]</p>
+<p>$$
+\begin{aligned}
+x(s)&=x_0+\int_0^s cos \left[as+ \frac{bs^2}{2} + \frac{cs^3}{3}+ \frac{ds^4}{4} \right] ds\newline
+y(s)&=y_0+\int_0^s sin \left[as+ \frac{bs^2}{2} + \frac{cs^3}{3}+ \frac{ds^4}{4} \right] ds\newline
+\end{aligned}
+$$
+所以，位置无法以 closed-form 形式求解。</p>
+<h3 id=-求解多项式>· 求解多项式<a href=#-求解多项式 class=anchor aria-hidden=true>#</a> </h3>
+<h4 id=-获取-abcd-初值>·· 获取 [a/b/c/d] 初值<a href=#-获取-abcd-初值 class=anchor aria-hidden=true>#</a> </h4>
+<h5 id=-查表>··· 查表<a href=#-查表 class=anchor aria-hidden=true>#</a> </h5>
+<p>参考： <a href=https://github.com/berlala/Basic_SD_Algorithm/blob/master/Path_Generation/Sprial%20Path%20with%20Quintic%20Velocity/Support_Fcn/threeD_spiral_param.mat>Basic_SD_Algorithm/Path_Generation</a></p>
+<p>在起点处建立坐标系，保证起点坐标 $[0,0,0]$，在给定的圆弧内查找最近 伪终点，从而得到一条近似的初值。</p>
+<h5 id=-固定一个参数求解>··· 固定一个参数求解<a href=#-固定一个参数求解 class=anchor aria-hidden=true>#</a> </h5>
+<p>参考：<a href="https://blog.csdn.net/github_39582118/article/details/117754864?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_title~default-1.control&spm=1001.2101.3001.4242">https://blog.csdn.net/github_39582118</a></p>
+<p>根据 $(1)$ 式定义可得
+$$
+\begin{aligned}
+\kappa(0)&=p_0 =\kappa_0 ，&lt;起点曲率>\newline
+\kappa(\frac{s_f}{3})&=p_1 =\kappa_0+\frac{b}{3}s_f+\frac{c}{9}{s_f}^2+\frac{d}{27}{s_f}^3 \newline
+\kappa(\frac{2s_f}{3})&=p_2 =\kappa_0+\frac{2b}{3}{s_f}+\frac{4c}{9}{s_f}^2+\frac{8d}{27}{s_f}^3 \newline
+\kappa(s_f)&=p_3 = \kappa_0+bs_f+c{s_f}^2+d{s_f}^3 \newline
+\end{aligned}
+\tag{2}
+$$
+借用 $Matlab$ 求解 $b, c, d$</p>
+<pre><code class=language-matlab>% Ax = B
+clear all
+close all
+clc
+
+syms p0 p1 p2 p3 s qf
+B = [p1-p0; p2-p0; p3-p0]
+disp(' ')
+A = [s/3   , (s/3)^2   , (s/3)^3   ;
+     2*s/3 , (2*s/3)^2 , (2*s/3)^3 ;
+     s     , s^2       , s^3       ]
+
+disp(' ')
+disp('solve: ')
+disp(' ')
+fun = linsolve(A,B);
+
+pretty(fun)
+</code></pre>
+<p>得到结果：</p>
+<pre><code class=language-matlab>B =
+ p1 - p0
+ p2 - p0
+ p3 - p0
+
+A =
+[     s/3,     s^2/9,     s^3/27]
+[ (2*s)/3, (4*s^2)/9, (8*s^3)/27]
+[       s,       s^2,        s^3]
+
+solve:
+
+/   11 p0 - 18 p1 + 9 p2 - 2 p3 \
+| - --------------------------- |   [b]
+|               2 s             |
+|                               |
+|  (2 p0 - 5 p1 + 4 p2 - p3) 9  |
+|  ---------------------------  |   [c]
+|                 2             |
+|              2 s              |
+|                               |
+|    (p0 - 3 p1 + 3 p2 - p3) 9  |
+|  - -------------------------  |   [d]
+|                  3            |
+\               2 s             /
+</code></pre>
+<p>令 $d=0$ ，同时根据 $(1)$ 式中末端角度，求解</p>
+<pre><code class=language-matlab>theta = p0*s + fun(1)/2*s^2 + fun(2)/3*s^3;
+
+disp(' ')
+% pretty(theta)
+
+p1_with_p2 = solve(theta==qf, p1);
+
+p2_ans = solve(p0-3*p1_with_p2+3*p2-p3==0,p2);  % d = 0
+
+p1_ans = -(4*qf - 5*p0*s - 15*p2_ans*s + 4*p3*s)/(12*s);
+
+b_ans = simplify(-(11*p0 - 18*p1_ans + 9*p2_ans - 2*p3)/(2*s));
+c_ans = simplify((9*(2*p0 - 5*p1_ans + 4*p2_ans - p3))/(2*s^2));
+
+disp(' ')
+disp('solve b &amp; c when set d=0')
+pretty(b_ans)
+pretty(c_ans)
+</code></pre>
+<p>得到 $b, c$ 的初值，其中 qf 表示 $\theta_f-\theta_0$ ：</p>
+<pre><code class=language-matlab>  4 p0 s - 6 qf + 2 p3 s
+- ----------------------                  [b]
+             2
+            s
+
+3 p0 s - 6 qf + 3 p3 s
+----------------------                    [c]
+           3
+          s
+</code></pre>
+<p>求取初值的过程中，仅使用了已知的角度和曲率，所以位置误差应该比较随机。</p>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/reactive.png title=image alt="scr convex" width=500>
+</div>
+<h3 id=other>Other<a href=#other class=anchor aria-hidden=true>#</a> </h3>
+<p>因示例代码中牛顿迭代法收敛性不好，怀疑是初值或者非线性的影响。最终使用 Nelder Mead 方法收敛，所以这里不进行偏导的推导。</p>
+<div class=my-n3></div>
+</main>
+</div>
+</div>
+</div>
+<footer class="footer text-muted">
+<div class=container>
+<div class=row>
+<div class="col-lg-8 order-last order-lg-first">
+<ul class=list-inline>
+<li class=list-inline-item>Powered by luoshi006</li>
+</ul>
+</div>
+<div class="col-lg-8 order-first order-lg-last text-lg-end">
+<ul class=list-inline>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+<script src=https://luoshi006.github.io/js/bootstrap.min.586171fec3966d1a44fa8aa2edb24b861dc3a72be8cc24aa4e0dabe4c312a0dae5fe1eaa7c93180a6211fa4d7c5461b0d228fdf741be2eae279a376dfa1e7d81.js integrity="sha512-WGFx/sOWbRpE+oqi7bJLhh3DpyvozCSqTg2r5MMSoNrl/h6qfJMYCmIR+k18VGGw0ij990G+Lq4nmjdt+h59gQ==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/highlight.min.e13cfba4c5524e30386cb9ea71f0f191f39d15b25b222f4b67549689f7c076158f42a2282446044f5cdacc76a6d003efbfa252a84aea0116703803b6339ae35f.js integrity="sha512-4Tz7pMVSTjA4bLnqcfDxkfOdFbJbIi9LZ1SWiffAdhWPQqIoJEYET1zazHam0APvv6JSqErqARZwOAO2M5rjXw==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/vendor/katex/dist/katex.min.7a4317f2b5d5ad65d4eb9573a27961c7404cf40db15c9637fa0cb380122c91c920aef6e4845b45e0b52c33aaae35921edcbe68420252c50f49ccd58660964ac0.js integrity="sha512-ekMX8rXVrWXU65Vzonlhx0BM9A2xXJY3+gyzgBIskckgrvbkhFtF4LUsM6quNZIe3L5oQgJSxQ9JzNWGYJZKwA==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/vendor/katex/dist/contrib/auto-render.min.916823ec103cf367b71e28a6f01513cb9c3ac6708ccb5229402ec46b8e30a8b25003db694df35d80e9dd666a371f327c6152790617b6256390c164109a90bd4c.js integrity="sha512-kWgj7BA882e3Hiim8BUTy5w6xnCMy1IpQC7Ea44wqLJQA9tpTfNdgOndZmo3HzJ8YVJ5Bhe2JWOQwWQQmpC9TA==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/main.min.25cdb7419aabf9517a7272eef61b8ae9bf11b7f8c76fdf5365aa2099652408dabbf0b32e428c16de79c5debbc905f5cc65abc8e3b4b8e8884d7774fca3312eb3.js integrity="sha512-Jc23QZqr+VF6cnLu9huK6b8Rt/jHb99TZaogmWUkCNq78LMuQowW3nnF3rvJBfXMZavI47S46IhNd3T8ozEusw==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/index.min.68f1187880c2de58679c56dd67602d3f09f724483c354226906312903a3b9fc80bffa04b6ba8cf2fc0a47dfd0780ab589f369886e89e8195c4f05fcc6bbc1884.js integrity="sha512-aPEYeIDC3lhnnFbdZ2AtPwn3JEg8NUImkGMSkDo7n8gL/6BLa6jPL8Ckff0HgKtYnzaYhuiegZXE8F/Ma7wYhA==" crossorigin=anonymous defer></script>
+</body>
+</html>

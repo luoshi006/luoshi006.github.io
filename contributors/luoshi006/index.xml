@@ -6,7 +6,16 @@ Summary 常见的轨迹规划算法，想要得到最优轨迹，通常都需要
 KeyPoints 采样频率的影响 过低的采样频率可能引起超调（下） Frenet 坐标系
 对于轨迹上一点 reference，以 切线方向 $\vec{t}_r$ 和法线方向 $\vec{n}_x$ 建立坐标系；$d(t)$ 表示机器人偏离轨迹的距离，$s(t)$ 表示机器人行程。
 图中，$\vec{t}_x, \vec{n}_x$ 仅用于表示机器人在 Frenet 坐标系的位姿；
-Frenet 流程 Lateral Movement 起始状态 $[d_0, \dot{d_0}, \ddot{d_0}]$，沿用上一状态，保证运动连续性； 目标状态要求 $\dot{d_1} = \ddot{d_1} = 0$，以保证最终的沿线运动，即，</description></item><item><title>Cubic Spline</title><link>https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/</link><pubDate>Fri, 17 Sep 2021 15:56:35 +0800</pubDate><guid>https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/</guid><description>refs: https://mathworld.wolfram.com/CubicSpline.html
+Frenet 流程 Lateral Movement 起始状态 $[d_0, \dot{d_0}, \ddot{d_0}]$，沿用上一状态，保证运动连续性； 目标状态要求 $\dot{d_1} = \ddot{d_1} = 0$，以保证最终的沿线运动，即，</description></item><item><title>Reactive Nonholonomic Traj Gen</title><link>https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/</link><pubDate>Fri, 24 Sep 2021 17:25:10 +0800</pubDate><guid>https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/</guid><description>Reactive Nonholonomic Trajectory Generation via Parametric Optimal Control - - Alonzo Kelly, Bryan Nagy
+https://github.com/lrm2017/SpiralsTrajactory.git https://github.com/jsford/PolyTraj.git https://github.com/berlala/Basic_SD_Algorithm.git Abstract 文章讨论了怎么实时生成一条轨迹，将轨迹问题建模成最优控制问题，进而转化为非线性优化问题。主要共享在于 三阶曲率多项式 的公式推导及求解。
+注：第二章介绍最优控制部分没看懂，对求解不影响，忽略；
+【Keywords】Polynomial Spirals , Clothoids
+Solution Using Polynomial Spirals 3.2 Clothoids 回旋曲线 定义其曲率为线性变化：
+$$ \kappa (s) = a + bs$$
+3.3 Polynomial Spirals 场景：已知起始点和终点的状态，求一条曲线
+将曲率表示为 n 阶多项式，用以满足端点的约束条件；
+3.4 Reduction to Decoupled Quadratures 多项式螺旋线可以通过封闭形式积分得到航向角 heading
+$$ \begin{aligned} \kappa(s)&amp;amp;=a+bs+cs^2+ds^3 \newline \theta(s)&amp;amp;=\theta_0 + \int \kappa ds =\theta_0 + as+ \frac{bs^2}{2} + \frac{cs^3}{3}+ \frac{ds^4}{4} \end{aligned} \tag{1} $$</description></item><item><title>Cubic Spline</title><link>https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/</link><pubDate>Fri, 17 Sep 2021 15:56:35 +0800</pubDate><guid>https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/</guid><description>refs: https://mathworld.wolfram.com/CubicSpline.html
 code: https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver/cubic_spline_planner.py
 Summary 三次样条曲线由分段三次多项式组成，样条曲线依次穿过控制点 $m$ 。
 不同的边界条件可以产生各种样条； &amp;ldquo;natural&amp;rdquo; 三次样条：终点处的二阶导数置为 $0$ 。
