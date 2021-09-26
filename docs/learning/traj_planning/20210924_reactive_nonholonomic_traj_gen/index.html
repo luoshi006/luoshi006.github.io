@@ -19,7 +19,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Reactive Nonholonomic Traj Gen">
 <meta property="og:description" content="Reactive Nonholonomic Trajectory Generation via Parametric Optimal Control - - Alonzo Kelly, Bryan Nagy
-   https://github.com/lrm2017/SpiralsTrajactory.git https://github.com/jsford/PolyTraj.git https://github.com/berlala/Basic_SD_Algorithm.git    Abstract 文章讨论了怎么实时生成一条轨迹，将轨迹问题建模成最优控制问题，进而转化为非线性优化问题。主要共享在于 三阶曲率多项式 的公式推导及求解。
+   https://github.com/lrm2017/SpiralsTrajactory.git https://github.com/jsford/PolyTraj.git https://github.com/berlala/Basic_SD_Algorithm.git    Abstract 文章讨论了怎么实时生成一条轨迹，将轨迹问题建模成最优控制问题，进而转化为非线性优化问题。主要贡献在于 三阶曲率多项式 的公式推导及求解。
 注：第二章介绍最优控制部分没看懂，对求解不影响，忽略；
 【Keywords】Polynomial Spirals , Clothoids
 Solution Using Polynomial Spirals 3.2 Clothoids 回旋曲线 定义其曲率为线性变化：
@@ -149,7 +149,7 @@ Reading
 </blockquote>
 <hr>
 <h2 id=abstract>Abstract<a href=#abstract class=anchor aria-hidden=true>#</a> </h2>
-<p>文章讨论了怎么实时生成一条轨迹，将轨迹问题建模成最优控制问题，进而转化为非线性优化问题。主要共享在于 <strong>三阶曲率多项式</strong> 的公式推导及求解。</p>
+<p>文章讨论了怎么实时生成一条轨迹，将轨迹问题建模成最优控制问题，进而转化为非线性优化问题。主要贡献在于 <strong>三阶曲率多项式</strong> 的公式推导及求解。</p>
 <p>注：第二章介绍最优控制部分没看懂，对求解不影响，忽略；</p>
 <p>【Keywords】Polynomial <a href=https://www.2dcurves.com/spiral/spiralps.html>Spirals</a> , <a href=https://zh.wikipedia.org/wiki/%E7%BE%8A%E8%A7%92%E8%9E%BA%E7%BA%BF>Clothoids</a></p>
 <h2 id=solution-using-polynomial-spirals>Solution Using Polynomial Spirals<a href=#solution-using-polynomial-spirals class=anchor aria-hidden=true>#</a> </h2>
@@ -277,6 +277,7 @@ pretty(c_ans)
 </div>
 <h3 id=other>Other<a href=#other class=anchor aria-hidden=true>#</a> </h3>
 <p>因示例代码中牛顿迭代法收敛性不好，怀疑是初值或者非线性的影响。最终使用 Nelder Mead 方法收敛，所以这里不进行偏导的推导。</p>
+<p>另外，目测查表的初值要好一些。</p>
 <div class=my-n3></div>
 </main>
 </div>
@@ -302,6 +303,6 @@ pretty(c_ans)
 <script src=https://luoshi006.github.io/js/vendor/katex/dist/katex.min.7a4317f2b5d5ad65d4eb9573a27961c7404cf40db15c9637fa0cb380122c91c920aef6e4845b45e0b52c33aaae35921edcbe68420252c50f49ccd58660964ac0.js integrity="sha512-ekMX8rXVrWXU65Vzonlhx0BM9A2xXJY3+gyzgBIskckgrvbkhFtF4LUsM6quNZIe3L5oQgJSxQ9JzNWGYJZKwA==" crossorigin=anonymous defer></script>
 <script src=https://luoshi006.github.io/js/vendor/katex/dist/contrib/auto-render.min.916823ec103cf367b71e28a6f01513cb9c3ac6708ccb5229402ec46b8e30a8b25003db694df35d80e9dd666a371f327c6152790617b6256390c164109a90bd4c.js integrity="sha512-kWgj7BA882e3Hiim8BUTy5w6xnCMy1IpQC7Ea44wqLJQA9tpTfNdgOndZmo3HzJ8YVJ5Bhe2JWOQwWQQmpC9TA==" crossorigin=anonymous defer></script>
 <script src=https://luoshi006.github.io/main.min.25cdb7419aabf9517a7272eef61b8ae9bf11b7f8c76fdf5365aa2099652408dabbf0b32e428c16de79c5debbc905f5cc65abc8e3b4b8e8884d7774fca3312eb3.js integrity="sha512-Jc23QZqr+VF6cnLu9huK6b8Rt/jHb99TZaogmWUkCNq78LMuQowW3nnF3rvJBfXMZavI47S46IhNd3T8ozEusw==" crossorigin=anonymous defer></script>
-<script src=https://luoshi006.github.io/index.min.68f1187880c2de58679c56dd67602d3f09f724483c354226906312903a3b9fc80bffa04b6ba8cf2fc0a47dfd0780ab589f369886e89e8195c4f05fcc6bbc1884.js integrity="sha512-aPEYeIDC3lhnnFbdZ2AtPwn3JEg8NUImkGMSkDo7n8gL/6BLa6jPL8Ckff0HgKtYnzaYhuiegZXE8F/Ma7wYhA==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/index.min.9dc38a02549b3f14e58e367c8f82b3a64dad7db649e64dc07698575b9576b542155a9ebc92ec5240689b7e40d342740479a8327cec0e0adb295c7073af3cc456.js integrity="sha512-ncOKAlSbPxTljjZ8j4Kzpk2tfbZJ5k3AdphXW5V2tUIVWp68kuxSQGibfkDTQnQEeagyfOwOCtspXHBzrzzEVg==" crossorigin=anonymous defer></script>
 </body>
 </html>
