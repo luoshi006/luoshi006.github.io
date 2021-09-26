@@ -24,6 +24,11 @@ toc: true
         - 自动驾驶经典论文，介绍了 **Frenet 坐标系** 下的轨迹生成，并根据代价选择最优路径；
         - 基于采样的方法实现，涉及一些多项式拟合的东西；
         - 论文不是很友好，但代码比较清晰；
+    
+    - [Reactive Nonholonomic Trajectory Generation via Parametric Optimal Control](/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen)
+        - 论文很难懂
+        - 主要贡献在于 **三阶曲率多项式** 的公式推导及求解
+        - Apollo EM planner 引用过
 
 
 - spline
