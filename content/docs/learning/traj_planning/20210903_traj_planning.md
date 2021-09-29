@@ -14,9 +14,6 @@ menu:
 weight: 020
 ---
 
----
-## Traj Planning
-
 - [Real-time Trajectory Optimization for Autonomous Vehicle Racing](/docs/learning/traj_planning/20210903_rt_traj_optimization_for_racing)
     - 一篇本科论文，从汽车模型开始，介绍了怎么建模，构建 QP 问题，线性化处理；比较全面，且有代码示例；
     - 因为里面涉及到比较多 **凸优化** 的知识，所以深入阅读有门槛；
@@ -28,4 +25,8 @@ weight: 020
     - 论文很难懂
     - 主要贡献在于 **三阶曲率多项式** 的公式推导及求解
     - Apollo EM planner 引用过
+- [Motion Planning for Autonomous Driving with a Conformal Spatiotemporal Lattice](/docs/learning/traj_planning/20210926_motion_planning_with_conform_spatio_lattice)
+    - 使用 **三阶曲率多项式** ，并引用了 **Thomas M. Howard** 博士论文中对雅克比求导的方法；
+    - 给出一种可行的时空网格（Lattice Vertex）构造和 **搜索** 方法，Apollo 引用文献；
+    - 给出来高速公路场景下的仿真结果，可以实现超车、换道、转弯减速；
 
