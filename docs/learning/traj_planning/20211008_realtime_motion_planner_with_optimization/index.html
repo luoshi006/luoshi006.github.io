@@ -1,0 +1,231 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/KaTeX_Main-Regular.woff2 type=font/woff2 crossorigin>
+<link rel=preload as=font href=https://luoshi006.github.io/fonts/KaTeX_Math-Italic.woff2 type=font/woff2 crossorigin>
+<link rel=stylesheet href=https://luoshi006.github.io/main.cfdf8ee24dc17db552bc8fdd2e163e3ab5ba8225ceae2ccb20537f67d7c14758ed3793e85f3733ed0afcac2bc5000b4a92e00a5d7d036ada71afedecb46a02e0.css integrity="sha512-z9+O4k3BfbVSvI/dLhY+OrW6giXOrizLIFN/Z9fBR1jtN5PoXzcz7Qr8rCvFAAtKkuAKXX0Datpxr+3stGoC4A==" crossorigin=anonymous>
+<noscript><style>img.lazyload{display:none}</style></noscript>
+<meta name=robots content="index, follow">
+<meta name=googlebot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name=bingbot content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<title>A Real-Time Motion Planner with Optimization - Home</title>
+<meta name=description content="luoshi006 Homepage">
+<link rel=canonical href=https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/>
+<meta property="og:locale" content="zh_CN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Real-Time Motion Planner with Optimization">
+<meta property="og:description" content="A Real-Time Motion Planner with Trajectory Optimization for Autonomous Vehicles &ndash; Wenda Xu
+ Abstract 首先搜索一条可行解，然后迭代优化 path 和 speed。
+Introduction Trajectory generation
+通常需要考虑三个约束： Kinematic, Dynamic, Road shape；
+Reactive Trajectory Generation  使用曲率多项式确保曲率变化率连续；
+Motion Planning with conform spatio lattice 串联沿路的航点，生成轨迹；但是加速度并不连续；
+Optimal trajectory generation in Frenet frame 通过将横、纵向轨迹使用五次多项式描述；但是需要对每个轨迹点校验曲率，且曲率虽然连续，但是曲率的一阶导数频繁切换正负号，对方向盘控制并不友好；
+Search Algorithm
+在自动驾驶场景中，由于动态障碍物的不可预测性，启发函数通常效果一般；
+若引入时间维度进行搜索，会导致搜索空间呈指数增长；
+Optimization method for planning
+如果只优化 path，对于高速场景和动态场景效果不佳；
+Algorithm Framework 算法由两部分构成： Traj Planning 和 Traj Optimization
+ A. Trajectory Generation Path 和 Speed 独立生成，然后组合成 Traj">
+<meta property="og:url" content="https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/">
+<meta property="og:site_name" content="Home">
+<meta property="article:published_time" content="2021-10-08T11:42:18+08:00">
+<meta property="article:modified_time" content="2021-10-08T11:42:18+08:00">
+<meta property="og:image" content="https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:site content>
+<meta name=twitter:creator content>
+<meta name=twitter:title content="A Real-Time Motion Planner with Optimization">
+<meta name=twitter:description content>
+<meta name=twitter:image content="https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/">
+<meta name=twitter:image:alt content="A Real-Time Motion Planner with Optimization">
+<script type=application/ld+json>{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://luoshi006.github.io/#/schema/organization/1","name":"Doks","url":"https://luoshi006.github.io/","sameAs":["https://twitter.com","https://github.com/luoshi006"],"logo":{"@type":"ImageObject","@id":"https://luoshi006.github.io/#/schema/image/1","url":"https://luoshi006.github.io/logo-doks.png","width":512,"height":512,"caption":"Doks"},"image":{"@id":"https://luoshi006.github.io/#/schema/image/1"}},{"@type":"WebSite","@id":"https://luoshi006.github.io/#/schema/website/1","url":"https://luoshi006.github.io/","name":"Home","description":"luoshi006 Homepage","publisher":{"@id":"https://luoshi006.github.io/#/schema/organization/1"}},{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/","url":"https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/","name":"A Real-Time Motion Planner with Optimization","description":"","isPartOf":{"@id":"https://luoshi006.github.io/#/schema/website/1"},"about":{"@id":"https://luoshi006.github.io/#/schema/organization/1"},"datePublished":"2021-10-08T11:42:18CET","dateModified":"2021-10-08T11:42:18CET","breadcrumb":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/#/schema/breadcrumb/1"},"primaryImageOfPage":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/#/schema/image/2"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/"]}]},{"@type":"BreadcrumbList","@id":"https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/#/schema/breadcrumb/1","name":"Breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io","url":"https://luoshi006.github.io","name":"Home"}},{"@type":"ListItem","position":3,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/","url":"https://luoshi006.github.io/docs/","name":"Docs"}},{"@type":"ListItem","position":4,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/","url":"https://luoshi006.github.io/docs/learning/","name":"Learning"}},{"@type":"ListItem","position":5,"item":{"@type":"WebPage","@id":"https://luoshi006.github.io/docs/learning/traj_planning/","url":"https://luoshi006.github.io/docs/learning/traj_planning/","name":"Traj Planning"}},{"@type":"ListItem","position":6,"item":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/"}}]},{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":"https://luoshi006.github.io/#/schema/article/1","headline":"A Real-Time Motion Planner with Optimization","description":"","isPartOf":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/"},"mainEntityOfPage":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/"},"datePublished":"2021-10-08T11:42:18CET","dateModified":"2021-10-08T11:42:18CET","author":{"@id":"https://luoshi006.github.io/#/schema/person/2"},"publisher":{"@id":"https://luoshi006.github.io/#/schema/organization/1"},"image":{"@id":"https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/#/schema/image/2"}}]},{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://luoshi006.github.io/#/schema/person/2","name":"luoshi006","sameAs":["https://twitter.com/","https://www.linkedin.com/","https://github.com/luoshi006"]}]},{"@context":"https://schema.org","@graph":[{"@type":"ImageObject","@id":"https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/#/schema/image/2","url":"https://luoshi006.github.io/doks.png","contentUrl":"https://luoshi006.github.io/doks.png","caption":"A Real-Time Motion Planner with Optimization"}]}]}</script>
+<meta name=theme-color content="#fff">
+<link rel=apple-touch-icon sizes=180x180 href=https://luoshi006.github.io/apple-touch-icon.png>
+<link rel=icon type=image/png sizes=32x32 href=https://luoshi006.github.io/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=https://luoshi006.github.io/favicon-16x16.png>
+<link rel=manifest crossorigin=use-credentials href=https://luoshi006.github.io/site.webmanifest>
+</head>
+<body class="docs single">
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+<div class=container>
+<input class="menu-btn order-0" type=checkbox id=menu-btn>
+<label class="menu-icon d-md-none" for=menu-btn><span class=navicon></span></label>
+<a class="navbar-brand order-1 order-md-0 me-auto" href=https://luoshi006.github.io/>Home</a>
+<button id=mode class="btn btn-link order-2 order-md-4" type=button aria-label="Toggle mode">
+<span class=toggle-dark><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
+<span class=toggle-light><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+</button>
+<ul class="navbar-nav social-nav order-3 order-md-5">
+<li class=nav-item>
+<a class=nav-link href=https://github.com/luoshi006><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg><span class="ms-2 visually-hidden">GitHub</span></a>
+</li>
+</ul>
+<div class="collapse navbar-collapse order-4 order-md-1">
+<ul class="navbar-nav main-nav me-auto order-5 order-md-2"><li class="nav-item active">
+<a class=nav-link href=https://luoshi006.github.io/docs/learning/introduction/>Docs</a>
+</li>
+<li class=nav-item>
+<a class=nav-link href=https://luoshi006.github.io/blog/>Blog</a>
+</li>
+</ul>
+<div class="break order-6 d-md-none"></div>
+<form class="navbar-form flex-grow-1 order-7 order-md-3">
+<input id=userinput class="form-control is-search" type=search placeholder="Search docs..." aria-label="Search docs..." autocomplete=off>
+<div id=suggestions class="shadow bg-white rounded"></div>
+</form>
+</div>
+</div>
+</header>
+<div class="wrap container" role=document>
+<div class=content>
+<div class="row flex-xl-nowrap">
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+<nav class=docs-links aria-label="Main navigation">
+<ul class="list-unstyled collapsible-sidebar">
+<li class=mb-1>
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#learning aria-expanded=true>
+Learning
+</button>
+<div class="collapse show" id=learning>
+<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/introduction/>Learning Introduction</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210903_traj_planning/>Traj Planning</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210903_rt_traj_optimization_for_racing/>RT Traj Optimization for Racing</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame/>Optimal Trajectory in a Frenet Frame</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen/>Reactive Nonholonomic Traj Gen</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/traj_planning/20210926_motion_planning_with_conform_spatio_lattice/>Motion Planning with Conformal Spatiotemporal Lattice</a></li>
+<li><a class="docs-link rounded active" href=https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/>A Real-Time Motion Planner with Optimization</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/>Cubic Spline</a></li>
+</ul>
+</div>
+</li>
+<li class=mb-1>
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle=collapse data-bs-target=#reading aria-expanded=false>
+Reading
+</button>
+<div class=collapse id=reading>
+<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/reading/01_code_reading/>Code Reading</a></li>
+<li><a class="docs-link rounded" href=https://luoshi006.github.io/docs/reading/02_paper_reading/>Paper Reading</a></li>
+</ul>
+</div>
+</li>
+</ul>
+</nav>
+</div>
+<nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation">
+<div class=page-links>
+<h3>On this page</h3>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#abstract>Abstract</a></li>
+<li><a href=#introduction>Introduction</a></li>
+<li><a href=#algorithm-framework>Algorithm Framework</a>
+<ul>
+<li><a href=#a-trajectory-generation>A. Trajectory Generation</a></li>
+<li><a href=#b-cost-function-set>B. Cost function set</a></li>
+<li><a href=#c-trajectory-optimization>C. Trajectory optimization</a></li>
+<li><a href=#d-optimization-performance-evaluation>D. Optimization performance evaluation</a></li>
+</ul>
+</li>
+<li><a href=#结论>结论</a></li>
+</ul>
+</nav>
+</div>
+</nav>
+<main class="docs-content col-lg-11 col-xl-9 mx-xl-auto">
+<h1>A Real-Time Motion Planner with Optimization</h1>
+<p class=lead></p>
+<blockquote>
+<p>A Real-Time Motion Planner with Trajectory Optimization for Autonomous Vehicles &ndash; Wenda Xu</p>
+</blockquote>
+<h2 id=abstract>Abstract<a href=#abstract class=anchor aria-hidden=true>#</a> </h2>
+<p>首先搜索一条可行解，然后迭代优化 path 和 speed。</p>
+<h2 id=introduction>Introduction<a href=#introduction class=anchor aria-hidden=true>#</a> </h2>
+<p><strong>Trajectory generation</strong></p>
+<p>通常需要考虑三个约束： Kinematic, Dynamic, Road shape；</p>
+<p><a href=https://luoshi006.github.io/docs/learning/traj_planning/20210924_reactive_nonholonomic_traj_gen>Reactive Trajectory Generation </a> 使用曲率多项式确保曲率变化率连续；</p>
+<p><a href=https://luoshi006.github.io/docs/learning/traj_planning/20210926_motion_planning_with_conform_spatio_lattice>Motion Planning with conform spatio lattice</a> 串联沿路的航点，生成轨迹；但是加速度并不连续；</p>
+<p><a href=https://luoshi006.github.io/docs/learning/traj_planning/20210916_optimal_traj_in_frenet_frame>Optimal trajectory generation in Frenet frame</a> 通过将横、纵向轨迹使用五次多项式描述；但是需要对每个轨迹点校验曲率，且曲率虽然连续，但是曲率的一阶导数频繁切换正负号，对方向盘控制并不友好；</p>
+<p><strong>Search Algorithm</strong></p>
+<p>在自动驾驶场景中，由于动态障碍物的不可预测性，启发函数通常效果一般；</p>
+<p>若引入时间维度进行搜索，会导致搜索空间呈指数增长；</p>
+<p><strong>Optimization method for planning</strong></p>
+<p>如果只优化 path，对于高速场景和动态场景效果不佳；</p>
+<h2 id=algorithm-framework>Algorithm Framework<a href=#algorithm-framework class=anchor aria-hidden=true>#</a> </h2>
+<p>算法由两部分构成： Traj Planning 和 Traj Optimization</p>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/2021-10-08_15-02.png title=image alt="alg frame" width=500>
+</div>
+<h3 id=a-trajectory-generation>A. Trajectory Generation<a href=#a-trajectory-generation class=anchor aria-hidden=true>#</a> </h3>
+<p>Path 和 Speed 独立生成，然后组合成 Traj</p>
+<h4 id=1-path-generation>1) Path Generation<a href=#1-path-generation class=anchor aria-hidden=true>#</a> </h4>
+<p>参考 <a href=https://luoshi006.github.io/docs/learning/traj_planning/20210926_motion_planning_with_conform_spatio_lattice>Motion Planning with conform spatio lattice</a> 中的采样方法，使用四阶多项式，保证曲率多项式在端点处连续。</p>
+<h5 id=a-endpoint-sampling>a) Endpoint sampling<a href=#a-endpoint-sampling class=anchor aria-hidden=true>#</a> </h5>
+<p>确定航点采样机制</p>
+<p>每段路径的 $N$ 个终点均垂直于参考线；</p>
+<h5 id=b-path-model>b) Path model<a href=#b-path-model class=anchor aria-hidden=true>#</a> </h5>
+<p>使用四次多项式能够保证多段轨迹的拼接点处<strong>曲率平滑</strong>；四次多项式生成的轨迹更平滑；</p>
+<p>由于四次多项式计算更复杂，所以，<strong>仅用于第一段路径</strong>；</p>
+<h4 id=2-speed-generation>2) Speed Generation<a href=#2-speed-generation class=anchor aria-hidden=true>#</a> </h4>
+<p>此处，forward method/inverse method 是什么意思？</p>
+<p>首先离散化 speed 空间，然后生成速度多项式：</p>
+<p>$$v(s)=\rho_0 + \rho_1s + \rho_2s^2 + \rho_3s^3$$</p>
+<p>四个约束分别是两端点的速度和加速度。所有节点处的加速度默认给 0，起点处按车的状态赋值。</p>
+<h3 id=b-cost-function-set>B. Cost function set<a href=#b-cost-function-set class=anchor aria-hidden=true>#</a> </h3>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/2021-10-08_17-13.png title=image alt="alg frame" width=500>
+</div>
+<div align=center>
+<img src=https://luoshi006.github.io/docs/learning/traj_planning/images/2021-10-08_17-14.png title=image alt="alg frame" width=500>
+</div>
+<p>其中，$c^s_{obs}$ 和 $c^d_{obs}$ 也用于障碍物检测，使用 ref-16 中提到的快速检测方法，在 vehicle 一定阈值范围内的障碍物的代价为正无穷；附近的代价使用指数函数近似；</p>
+<h3 id=c-trajectory-optimization>C. Trajectory optimization<a href=#c-trajectory-optimization class=anchor aria-hidden=true>#</a> </h3>
+<p>为保证实时性，搜索过程中的离散化是不可避免的；但是会影响结果的最优性。所以，引入优化器提升性能。</p>
+<p>如果同时优化 path 和速度，计算复杂度较大，且维数太多不容易收敛；文章提出将 path 和 速度独立优化，通过几次迭代，能够收敛到较好结果。</p>
+<h4 id=1-path-optimization>1) Path optimization<a href=#1-path-optimization class=anchor aria-hidden=true>#</a> </h4>
+<p>由于横向偏移和航向角的代价梯度很难求解，所以，采用不求解导数的单纯形法</p>
+<h4 id=2-speed-optimization>2) Speed optimization<a href=#2-speed-optimization class=anchor aria-hidden=true>#</a> </h4>
+<p>也用单纯形法求解</p>
+<h3 id=d-optimization-performance-evaluation>D. Optimization performance evaluation<a href=#d-optimization-performance-evaluation class=anchor aria-hidden=true>#</a> </h3>
+<p>通过实验对比，迭代求解能够有限的耗时内，获取较优的结果；</p>
+<p>可行性验证实验对比了急转弯场景、静态障碍物绕行，超车场景；</p>
+<h2 id=结论>结论<a href=#结论 class=anchor aria-hidden=true>#</a> </h2>
+<ul>
+<li>单纯形法的优化需要继续了解</li>
+</ul>
+<div class=my-n3></div>
+</main>
+</div>
+</div>
+</div>
+<footer class="footer text-muted">
+<div class=container>
+<div class=row>
+<div class="col-lg-8 order-last order-lg-first">
+<ul class=list-inline>
+<li class=list-inline-item>Powered by luoshi006</li>
+</ul>
+</div>
+<div class="col-lg-8 order-first order-lg-last text-lg-end">
+<ul class=list-inline>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+<script src=https://luoshi006.github.io/js/bootstrap.min.586171fec3966d1a44fa8aa2edb24b861dc3a72be8cc24aa4e0dabe4c312a0dae5fe1eaa7c93180a6211fa4d7c5461b0d228fdf741be2eae279a376dfa1e7d81.js integrity="sha512-WGFx/sOWbRpE+oqi7bJLhh3DpyvozCSqTg2r5MMSoNrl/h6qfJMYCmIR+k18VGGw0ij990G+Lq4nmjdt+h59gQ==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/highlight.min.e13cfba4c5524e30386cb9ea71f0f191f39d15b25b222f4b67549689f7c076158f42a2282446044f5cdacc76a6d003efbfa252a84aea0116703803b6339ae35f.js integrity="sha512-4Tz7pMVSTjA4bLnqcfDxkfOdFbJbIi9LZ1SWiffAdhWPQqIoJEYET1zazHam0APvv6JSqErqARZwOAO2M5rjXw==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/vendor/katex/dist/katex.min.7a4317f2b5d5ad65d4eb9573a27961c7404cf40db15c9637fa0cb380122c91c920aef6e4845b45e0b52c33aaae35921edcbe68420252c50f49ccd58660964ac0.js integrity="sha512-ekMX8rXVrWXU65Vzonlhx0BM9A2xXJY3+gyzgBIskckgrvbkhFtF4LUsM6quNZIe3L5oQgJSxQ9JzNWGYJZKwA==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/js/vendor/katex/dist/contrib/auto-render.min.916823ec103cf367b71e28a6f01513cb9c3ac6708ccb5229402ec46b8e30a8b25003db694df35d80e9dd666a371f327c6152790617b6256390c164109a90bd4c.js integrity="sha512-kWgj7BA882e3Hiim8BUTy5w6xnCMy1IpQC7Ea44wqLJQA9tpTfNdgOndZmo3HzJ8YVJ5Bhe2JWOQwWQQmpC9TA==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/main.min.25cdb7419aabf9517a7272eef61b8ae9bf11b7f8c76fdf5365aa2099652408dabbf0b32e428c16de79c5debbc905f5cc65abc8e3b4b8e8884d7774fca3312eb3.js integrity="sha512-Jc23QZqr+VF6cnLu9huK6b8Rt/jHb99TZaogmWUkCNq78LMuQowW3nnF3rvJBfXMZavI47S46IhNd3T8ozEusw==" crossorigin=anonymous defer></script>
+<script src=https://luoshi006.github.io/index.min.4a79ed0c367d708877c46f69b11dc07713d71cd9c44fee08e25043f9b2e954339229bf2c38951b36af99f50d14ab573e1a1f664250de5e51b54131cf81eb3617.js integrity="sha512-SnntDDZ9cIh3xG9psR3AdxPXHNnET+4I4lBD+bLpVDOSKb8sOJUbNq+Z9Q0Uq1c+Gh9mQlDeXlG1QTHPges2Fw==" crossorigin=anonymous defer></script>
+</body>
+</html>

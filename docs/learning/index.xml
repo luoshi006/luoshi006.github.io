@@ -19,7 +19,20 @@ $$ \begin{aligned} \kappa(s)&amp;amp;=a+bs+cs^2+ds^3 \newline \theta(s)&amp;amp;
 state_lattice/src/primitive_generator.cpp 使用中心差分法求解 Jacobian，参考文中提到 Howard 论文 I. Abstract 主要贡献主要是 Idea，给出一种可行的时空网格搜索方法，推迟时间相关网格的生成；同时，通过调整 Cost 能够实现跟随、超车、转弯减速等功能。
 目标场景：有动态障碍物的结构化道路环境；
 III. Method 借用了 Reactive Trajectory Generation 中的三阶多项式螺旋线： $$ \begin{aligned} \kappa(s)&amp;amp;=a+bs+cs^2+ds^3 \newline \theta(s)&amp;amp;=\theta_0 + \int \kappa ds =\theta_0 + as+ \frac{bs^2}{2} + \frac{cs^3}{3}+ \frac{ds^4}{4} \end{aligned} \tag{1} $$
-明确的提到了 T. Howard 博士论文中雅克比矩阵的方法[p30]，以及 Fresnel 积分、Simpson 方法。初值通过 Reactive Trajectory Generation 中提到的查表法获取。</description></item><item><title>Cubic Spline</title><link>https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/</link><pubDate>Fri, 17 Sep 2021 15:56:35 +0800</pubDate><guid>https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/</guid><description>refs: https://mathworld.wolfram.com/CubicSpline.html
+明确的提到了 T. Howard 博士论文中雅克比矩阵的方法[p30]，以及 Fresnel 积分、Simpson 方法。初值通过 Reactive Trajectory Generation 中提到的查表法获取。</description></item><item><title>A Real-Time Motion Planner with Optimization</title><link>https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/</link><pubDate>Fri, 08 Oct 2021 11:42:18 +0800</pubDate><guid>https://luoshi006.github.io/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization/</guid><description>A Real-Time Motion Planner with Trajectory Optimization for Autonomous Vehicles &amp;ndash; Wenda Xu
+Abstract 首先搜索一条可行解，然后迭代优化 path 和 speed。
+Introduction Trajectory generation
+通常需要考虑三个约束： Kinematic, Dynamic, Road shape；
+Reactive Trajectory Generation 使用曲率多项式确保曲率变化率连续；
+Motion Planning with conform spatio lattice 串联沿路的航点，生成轨迹；但是加速度并不连续；
+Optimal trajectory generation in Frenet frame 通过将横、纵向轨迹使用五次多项式描述；但是需要对每个轨迹点校验曲率，且曲率虽然连续，但是曲率的一阶导数频繁切换正负号，对方向盘控制并不友好；
+Search Algorithm
+在自动驾驶场景中，由于动态障碍物的不可预测性，启发函数通常效果一般；
+若引入时间维度进行搜索，会导致搜索空间呈指数增长；
+Optimization method for planning
+如果只优化 path，对于高速场景和动态场景效果不佳；
+Algorithm Framework 算法由两部分构成： Traj Planning 和 Traj Optimization
+A. Trajectory Generation Path 和 Speed 独立生成，然后组合成 Traj</description></item><item><title>Cubic Spline</title><link>https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/</link><pubDate>Fri, 17 Sep 2021 15:56:35 +0800</pubDate><guid>https://luoshi006.github.io/docs/learning/spline/20210917_cubic_spline/</guid><description>refs: https://mathworld.wolfram.com/CubicSpline.html
 code: https://github.com/ChenBohan/Robotics-Path-Planning-04-Quintic-Polynomial-Solver/cubic_spline_planner.py
 Summary 三次样条曲线由分段三次多项式组成，样条曲线依次穿过控制点 $m$ 。
 不同的边界条件可以产生各种样条； &amp;ldquo;natural&amp;rdquo; 三次样条：终点处的二阶导数置为 $0$ 。
