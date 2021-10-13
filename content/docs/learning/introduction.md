@@ -30,6 +30,10 @@ toc: true
 - 使用 **三阶曲率多项式** ，并引用了 **Thomas M. Howard** 博士论文中对雅克比求导的方法；
 - 给出一种可行的时空网格（Lattice Vertex）构造和 **搜索** 方法，Apollo 引用文献；
 - 给出来高速公路场景下的仿真结果，可以实现超车、换道、转弯减速；
+##### [A Real-Time Motion Planner with Trajectory Optimization for Autonomous Vehicles](/docs/learning/traj_planning/20211008_realtime_motion_planner_with_optimization)
+- Apollo EM-planner 参考文献
+- 通过状态空间采样，得到轨迹初值；并生成速度曲线
+- 循环迭代优化 path 和speed，减小计算量
 
 
 ### Spline
